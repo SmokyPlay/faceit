@@ -26,7 +26,7 @@ export default class RegisterCommand extends AbstractCommand implements Discord.
       await global.mongo.insert('users', {
         id: member.id,
         brawlTag: account.tag,
-        elo: 0,
+        elo: 100,
         battles: 0,
         victories: 0,
         defeats: 0,
