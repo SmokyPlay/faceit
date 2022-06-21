@@ -8,5 +8,6 @@ export default interface ModesInteractionDataConfig {
     team2: Array<GameMemberConfig>
     lobby: LobbyConfig
     modes: Array<ModeConfig>
+    selected: Array<ModeConfig>
     oneSelected: boolean
 }

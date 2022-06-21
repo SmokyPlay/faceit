@@ -55,6 +55,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
                     team2: this.data.team2,
                     lobby: this.data.lobby,
                     modes: properties.modes,
+                    selected: [],
                     oneSelected: false
                 },
                 reply: this.reply

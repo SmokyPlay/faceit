@@ -43,6 +43,7 @@ export default class EndInteraction extends AbstractInteraction implements Inter
             }, 30000)
             return {ended: false}
         }
+        this.reply.embed.fields = [];
         this.reply.embed
             .setDescription(`Игра окончена!\nПобедила команда #${results.winner.replace('team', '')}`)
             .addField("Команда 1",

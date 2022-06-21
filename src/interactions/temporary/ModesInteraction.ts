@@ -22,20 +22,28 @@ export default class ModesInteraction extends AbstractInteraction implements Int
         let value = interaction.values[0];
         let mode = this.data.modes.find(m => m.value === value);
         if(!this.data.oneSelected) {
+            this.data.selected.push(mode);
             this.data.modes.splice(this.data.modes.indexOf(mode), 1);
             this.allowedUsers = [this.data.team2.find(m => m.captain).discord.id];
             this.reply.embed
                 .setColor('#007ef8')
-                .setDescription(`Выберите режим, на котором __не хотите__ играть\nВыбирает: ${this.data.team2.find(m => m.captain).discord.toString()}`)
-            await interaction.editReply({embeds: [this.reply.embed]});
+                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team2.find(m => m.captain).discord.toString()}`)
+            let menu = this.reply.row.components[0] as Discord.MessageSelectMenu;
+            menu.setOptions(this.data.modes);
+            this.reply.row.setComponents(menu)
+            await interaction.editReply({embeds: [this.reply.embed], components: [this.reply.row]});
             this.data.oneSelected = true;
             return {ended: false};
         }
         else {
+            this.data.selected.push(mode);
             this.data.modes.splice(this.data.modes.indexOf(mode), 1);
             let randomMode = this.data.modes[Math.floor(this.data.modes.length * Math.random())]
+            this.data.selected.push(randomMode);
             this.reply.embed
-                .setDescription(`Игра создана!\nРежим: ${"`" + randomMode.label + "`"}\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
+                .setDescription(`Игра создана!\n` +
+                    this.data.selected.map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}`).join("\n") +
+                    `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
                 .setThumbnail(interaction.guild.emojis.cache.get(randomMode.emoji).url)
             let button = new Discord.MessageButton()
                 .setCustomId(`${interaction.id}-end`)

@@ -46,7 +46,7 @@ export default async function BattleResults (data: EndInteractionDataConfig, log
             }
         }
         else {
-            member.brawl.elo -= rank.defeat;
+            member.brawl.elo += rank.defeat;
             members.push(Object.assign(member, {eloChange: rank.defeat}))
             if(member.brawl.elo < 0) member.brawl.elo = 0;
             if(member.brawl.elo < rank.elo) {
