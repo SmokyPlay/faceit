@@ -52,22 +52,21 @@ export default class SubscriptionsInteraction extends AbstractPermanentInteracti
                 ephemeral: true
             }
         }
-        let sub = await global.mongo.findOne<Subscription>('subscriptions', {id: member.id});
-        if(sub) return {
-            reply: {
-                embeds:
-                    [CommandError.other(member, "Вы уже купили подписку")],
-                ephemeral: true
-            }
-        }
         user.balance -= subscription.price;
         await global.mongo.save('users', user);
-        let ends = new Date(Date.now() + subscription.months * 2592000000)
-        await global.mongo.insert('subscriptions', {
-            id: member.id,
-            started: new Date(),
-            ends: ends
-        })
+        let sub = await global.mongo.findOne<Subscription>('subscriptions', {id: member.id});
+        if(sub) {
+            sub.ends = new Date(sub.ends.getTime() + subscription.months * 2592000000)
+            await global.mongo.save('subscriptions', sub)
+        }
+        else {
+            let ends = new Date(Date.now() + subscription.months * 2592000000)
+            await global.mongo.insert('subscriptions', {
+                id: member.id,
+                started: new Date(),
+                ends: ends
+            })
+        }
         let embed = new MessageEmbed()
             .setColor('#007ef8')
             .setAuthor({name: "Подписка", iconURL: member.displayAvatarURL({dynamic: true})})
