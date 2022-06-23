@@ -32,6 +32,12 @@ export default class RegisterCommand extends AbstractCommand implements Discord.
         defeats: 0,
         balance: 0
       })
+      let ends = new Date(Date.now() + 2592000000)
+      await global.mongo.insert('subscriptions', {
+        id: member.id,
+        started: new Date(),
+        ends: ends
+      })
       await member.setNickname(account.name + ' ' + account.tag).catch(() => {});
       //await member.roles.remove("782544002544959518");
       setTimeout(() => member.roles.add("781200003586457610"), 3000);
