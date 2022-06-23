@@ -25,6 +25,14 @@ const client = new Client(process.env.TOKEN, {
     'GUILD_SCHEDULED_EVENTS']
 })
 
+process.on('unhandledRejection', reason => {
+  console.log(reason);
+})
+
+process.on('uncaughtException', err => {
+  console.log(err);
+})
+
 const brawl = new BrawlStars(process.env.BS_TOKEN);
 global.brawl = brawl;
 

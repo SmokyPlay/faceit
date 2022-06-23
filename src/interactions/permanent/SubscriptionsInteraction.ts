@@ -45,7 +45,7 @@ export default class SubscriptionsInteraction extends AbstractPermanentInteracti
         let member = interaction.member as GuildMember;
         let user = await global.mongo.findOne<User>('users', {id: member.id});
         let subscription = subscriptions.find(sub => sub.value === interaction.values[0]);
-        if(user.balance < subscription.price) return {
+        if(user?.balance < subscription.price) return {
             reply: {
                 embeds:
                     [CommandError.other(member, "У вас недостаточно денег для покупки этой подписки", "Недостаточно денег")],
