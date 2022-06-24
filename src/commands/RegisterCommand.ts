@@ -39,7 +39,7 @@ export default class RegisterCommand extends AbstractCommand implements Discord.
         ends: ends
       })
       await member.setNickname(account.name + ' ' + account.tag).catch(() => {});
-      //await member.roles.remove("782544002544959518");
+      await member.roles.remove("782544002544959518");
       setTimeout(() => member.roles.add("781200003586457610"), 3000);
       return {reply: {content: "Аккаунт зарегистрирован!"}}
     }
