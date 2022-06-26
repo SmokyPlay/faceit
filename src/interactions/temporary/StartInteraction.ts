@@ -60,7 +60,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
                     team1: this.data.team1,
                     team2: this.data.team2,
                     lobby: this.data.lobby,
-                    modes: properties.modes,
+                    modes: JSON.parse(JSON.stringify(properties.modes)),
                     selected: [],
                     oneSelected: false
                 },
