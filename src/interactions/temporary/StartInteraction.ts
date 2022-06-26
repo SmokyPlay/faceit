@@ -9,6 +9,7 @@ import ModesInteraction from "@/interactions/temporary/ModesInteraction";
 import ReplaceType from "@/types/utils/ReplaceType";
 
 import properties from "@/properties.json";
+import User from "@/types/database/User";
 
 export default class StartInteraction extends AbstractInteraction implements InteractionConfig {
     public declare data: StartInteractionDataConfig
@@ -23,17 +24,22 @@ export default class StartInteraction extends AbstractInteraction implements Int
             await interaction.followUp({embeds: [CommandError.other(member, "Вас нет в лобби, в котором проходит игра")], ephemeral: true})
             return {ended: false}
         }
-        /*if(this.data.members.includes(member)) {
+        if(this.data.members.find(m => m.discord === member)) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вы уже присоединились к этой игре")], ephemeral: true})
             return {ended: false}
-        }*/
-        this.data.members.push(member);
+        }
+        let user = await global.mongo.findOne<User>('users', {id: member.id});
+        if(!user) {
+            await interaction.followUp({embeds: [CommandError.other(member, "Вы не зарегистрированы в системе")], ephemeral: true})
+            return {ended: false}
+        }
+        this.data.members.push({discord: member, brawl: user, captain: false});
         if(this.data.members.length === 6) {
             await interaction.editReply({components: []});
             await this.CreateTeams()
             this.reply.embed.fields = [];
             this.reply.embed
-                .setDescription(`Выберите режим, на котором __не хотите__ играть\nВыбирает: ${this.data.team1.find(m => m.captain).discord.toString()}`)
+                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team1.find(m => m.captain).discord.toString()}`)
                 .addField("Команда 1",
                     this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
                         .join("\n"), true)
@@ -65,7 +71,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
         else {
             this.reply.embed.fields = [];
             this.reply.embed
-                .addField("Участники", this.data.members.map(memb => memb.toString()).join("\n"))
+                .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
             await interaction.editReply({embeds: [this.reply.embed]});
         }
         return {ended: false};
@@ -74,14 +80,14 @@ export default class StartInteraction extends AbstractInteraction implements Int
     private async CreateTeams(): Promise<void> {
         for(let i = 0; i < 3; i++) {
             let player = this.data.members[Math.floor(this.data.members.length * Math.random())]
-            await player.voice?.setChannel(this.data.lobby.team1).catch(() => {});
-            this.data.team1.push({discord: player, captain: false})
+            await player.discord.voice?.setChannel(this.data.lobby.team1).catch(() => {});
+            this.data.team1.push(player)
             this.data.members.splice(this.data.members.indexOf(player), 1);
         }
         for(let i = 0; i < 3; i++) {
             let player = this.data.members[i];
-            await player.voice?.setChannel(this.data.lobby.team2).catch(() => {});
-            this.data.team2.push({discord: player, captain: false})
+            await player.discord.voice?.setChannel(this.data.lobby.team2).catch(() => {});
+            this.data.team2.push(player)
         }
         this.data.members = []
         this.data.team1[Math.floor(this.data.team1.length * Math.random())].captain = true;

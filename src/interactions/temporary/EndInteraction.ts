@@ -18,16 +18,6 @@ export default class EndInteraction extends AbstractInteraction implements Inter
 
     private async end(interaction: Discord.SelectMenuInteraction): Promise<InteractionExecutionResultConfig> {
         let member = interaction.member as Discord.GuildMember;
-        for(let i in this.data.team1) {
-            let m = this.data.team1[i];
-            m.brawl = await global.mongo.findOne<User>('users', {id: m.discord.id});
-            this.data.team1[i] = m;
-        }
-        for(let i in this.data.team2) {
-            let m = this.data.team2[i];
-            m.brawl = await global.mongo.findOne<User>('users', {id: m.discord.id});
-            this.data.team2[i] = m;
-        }
         let logs = await global.brawl.battleLog(this.data.team1.find(m => m.captain).brawl.brawlTag);
         let log = logs.items[0].battle;
         let results = await BattleResults(this.data, log);

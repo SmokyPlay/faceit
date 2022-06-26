@@ -7,6 +7,7 @@ import CommandError from "@/utils/CommandError";
 import StartInteraction from "@/interactions/temporary/StartInteraction";
 import LobbyConfig from "../types/LobbyConfig";
 import properties from '@/properties.json';
+import User from "@/types/database/User";
 
 export default class StartCommand extends AbstractCommand implements Discord.ChatInputApplicationCommandData {
     public name = 'старт'
@@ -18,13 +19,16 @@ export default class StartCommand extends AbstractCommand implements Discord.Cha
         let lobby: LobbyConfig = properties.lobbies.find(l => l.voice === member.voice?.channel?.id);
         if(!lobby) {
             return {reply: {embeds:
-                        [CommandError.other(member, "Эту команду можно использовать только находясь в лобби")], ephemeral: true}}
+                        [CommandError.other(member, "Эту команду можно использовать только находясь в лобби")]}}
         }
-        if(member.voice.channel.members.size < 1) {
+        if(member.voice.channel.members.size < 6) {
             return {reply: {embeds: [
                 CommandError.other(member, "Для начала игры в лобби должно быть 6 игроков",
                     "Недостаточно игроков")], ephemeral: true}}
         }
+        let user = await global.mongo.findOne<User>('users', {id: member.id});
+        if(!user) return {reply: {embeds:
+                    [CommandError.other(member, "Вы не зарегистрированы в системе")]}}
         let embed = new Discord.MessageEmbed()
             .setColor('#007ef8')
             .setTitle("Игра")
@@ -40,7 +44,7 @@ export default class StartCommand extends AbstractCommand implements Discord.Cha
             id: interaction.id,
             allowedUsers: null,
             data: {
-                members: [member],
+                members: [{discord: member, brawl: user, captain: false}],
                 lobby: lobby,
                 team1: [],
                 team2: []
