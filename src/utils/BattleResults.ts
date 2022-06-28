@@ -10,7 +10,7 @@ export default async function BattleResults (data: EndInteractionDataConfig, log
     console.log(log);
     let ranks: Array<UserRankConfig> = properties.ranks;
     console.log(log.mode)
-    console.log(data.mode.label)
+    console.log(data.mode.value)
     if(log.mode !== data.mode.value) return null;
     let team1: boolean;
     console.log(data.team1, data.team2);
@@ -40,6 +40,8 @@ export default async function BattleResults (data: EndInteractionDataConfig, log
         if(data[winner].includes(member)) {
             members.push(Object.assign(member, {eloChange: rank.victory}))
             member.brawl.elo += rank.victory;
+            member.brawl.battles++;
+            member.brawl.victories++;
             if(member.brawl.elo >= ranks[rank.rank].elo) {
                 await member.discord.roles.remove(rank.role);
                 await member.discord.roles.add(ranks[rank.rank].role);
@@ -47,6 +49,8 @@ export default async function BattleResults (data: EndInteractionDataConfig, log
         }
         else {
             member.brawl.elo += rank.defeat;
+            member.brawl.battles++;
+            member.brawl.defeats++;
             members.push(Object.assign(member, {eloChange: rank.defeat}))
             if(member.brawl.elo < 0) member.brawl.elo = 0;
             if(member.brawl.elo < rank.elo) {
