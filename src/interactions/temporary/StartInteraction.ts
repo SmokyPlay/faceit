@@ -80,13 +80,13 @@ export default class StartInteraction extends AbstractInteraction implements Int
     private async CreateTeams(): Promise<void> {
         for(let i = 0; i < 3; i++) {
             let player = this.data.members[Math.floor(this.data.members.length * Math.random())]
-            await player.discord.voice?.setChannel(this.data.lobby.team1).catch(() => {});
+            //await player.discord.voice?.setChannel(this.data.lobby.team1).catch(() => {});
             this.data.team1.push(player)
             this.data.members.splice(this.data.members.indexOf(player), 1);
         }
         for(let i = 0; i < 3; i++) {
             let player = this.data.members[i];
-            await player.discord.voice?.setChannel(this.data.lobby.team2).catch(() => {});
+            //await player.discord.voice?.setChannel(this.data.lobby.team2).catch(() => {});
             this.data.team2.push(player)
         }
         this.data.members = []

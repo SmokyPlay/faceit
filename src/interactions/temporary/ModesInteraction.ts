@@ -51,6 +51,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                 .setLabel("Закончить")
                 .setDisabled(true)
             this.reply.row.setComponents(button)
+            await this.SetVoiceChannels();
             let inter = new EndInteraction({
                 id: interaction.id,
                 allowedUsers: null,
@@ -68,6 +69,15 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                 await interaction.editReply({components: [this.reply.row]});
             }, 5000)
             return {ended: true, interaction: inter};
+        }
+    }
+
+    private async SetVoiceChannels() {
+        for(let i = 0; i < 3; i++) {
+            await this.data.team1[i].discord.voice.setChannel(this.data.lobby.team1);
+        }
+        for(let i = 0; i < 3; i++) {
+            await this.data.team2[i].discord.voice.setChannel(this.data.lobby.team2);
         }
     }
 }
