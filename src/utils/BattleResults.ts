@@ -14,7 +14,9 @@ export default class BattleResults {
         let mode = 0;
         let ranks: Array<UserRankConfig> = properties.ranks;
         for(let i = 2; i >= 0; i--) {
-            let winner = await this.GetWinner(data, logs[i], mode);
+            console.log(`Count: ${i}`);
+            console.log(logs[i]);
+            let winner = this.GetWinner(data, logs[i], mode);
             console.log(winner)
             if(!winner) {
                 if(i === 2) mode--;
@@ -66,11 +68,9 @@ export default class BattleResults {
         else return null;
         let valid: boolean;
         data[team1 ? "team1" : "team2"].forEach(member => {
-            console.log(log.teams[0].find(m => m.tag === member.brawl.brawlTag))
             valid = !!log.teams[0].find(m => m.tag === member.brawl.brawlTag);
         })
         data[!team1 ? "team1" : "team2"].forEach(member => {
-            console.log(log.teams[0].find(m => m.tag === member.brawl.brawlTag))
             valid = !!log.teams[1].find(m => m.tag === member.brawl.brawlTag);
         })
         console.log(valid)
