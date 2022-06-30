@@ -8,4 +8,5 @@ export default interface EndInteractionDataConfig {
     team2: Array<GameMemberConfig>
     lobby: LobbyConfig
     modes: Array<ModeConfig>
+    startedAt: Date
 }

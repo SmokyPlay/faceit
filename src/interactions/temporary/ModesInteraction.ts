@@ -59,7 +59,8 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                     team1: this.data.team1,
                     team2: this.data.team2,
                     lobby: this.data.lobby,
-                    modes: this.data.selected
+                    modes: this.data.selected,
+                    startedAt: interaction.createdAt
                 },
                 reply: this.reply
             })

@@ -13,13 +13,14 @@ export default class BattleResults {
         }
         let mode = 0;
         let ranks: Array<UserRankConfig> = properties.ranks;
-        for(let i = 2; i >= 0; i--) {
+        for(let i = 0; i < 3; i++) {
+            let gameLogs = logs.filter(l => l.mode === data.modes[i].value);
             console.log(`Count: ${i}`);
-            console.log(logs[i]);
-            let winner = this.GetWinner(data, logs[i], mode);
+            console.log(gameLogs);
+            let winner = this.GetWinner(data, gameLogs, mode);
             console.log(winner)
             if(!winner) {
-                if(i === 2) mode--;
+                if(i === 0) mode--;
                 else return null;
             }
             victories[winner]++;
@@ -60,21 +61,29 @@ export default class BattleResults {
         }
     }
 
-    public static GetWinner (data: EndInteractionDataConfig, log: BattleConfig, mode: number): 'team1' | 'team2' {
-        if(log.mode !== data.modes[mode].value) return null;
-        let team1: boolean;
-        if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag)) team1 = true;
-        else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag)) team1 = false;
-        else return null;
-        let valid: boolean;
-        data[team1 ? "team1" : "team2"].forEach(member => {
-            valid = !!log.teams[0].find(m => m.tag === member.brawl.brawlTag);
-        })
-        data[!team1 ? "team1" : "team2"].forEach(member => {
-            valid = !!log.teams[1].find(m => m.tag === member.brawl.brawlTag);
-        })
-        console.log(valid)
-        if(!valid) return null;
-        return log.result === 'victory' ? 'team1' : 'team2';
+    public static GetWinner (data: EndInteractionDataConfig, logs: Array<BattleConfig>, mode: number): 'team1' | 'team2' {
+        let victories = {
+            team1: 0,
+            team2: 0
+        }
+        for(let log of logs) {
+            let team1: boolean;
+            if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag)) team1 = true;
+            else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag)) team1 = false;
+            else return null;
+            let valid: boolean;
+            data[team1 ? "team1" : "team2"].forEach(member => {
+                valid = !!log.teams[0].find(m => m.tag === member.brawl.brawlTag);
+            })
+            data[!team1 ? "team1" : "team2"].forEach(member => {
+                valid = !!log.teams[1].find(m => m.tag === member.brawl.brawlTag);
+            })
+            console.log(valid)
+            if(!valid) return null;
+            let winner = log.result === 'victory' ? 'team1' : 'team2';
+            victories[winner]++;
+        }
+        if(victories.team1 < 2 && victories.team2 < 2) return null;
+        return victories.team1 > victories.team2 ? 'team1' : 'team2';
     }
 }
