@@ -7,5 +7,5 @@ export default interface EndInteractionDataConfig {
     team1: Array<GameMemberConfig>
     team2: Array<GameMemberConfig>
     lobby: LobbyConfig
-    mode: ModeConfig
+    modes: Array<ModeConfig>
 }

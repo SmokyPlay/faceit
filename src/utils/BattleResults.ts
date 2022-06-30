@@ -11,21 +11,20 @@ export default class BattleResults {
             team1: 0,
             team2: 0
         }
+        let mode = 0;
         let ranks: Array<UserRankConfig> = properties.ranks;
-        for(let i = 1; i >= 0; i--) {
-            let winner = await this.GetWinner(data, logs[i]);
+        for(let i = 2; i >= 0; i--) {
+            let winner = await this.GetWinner(data, logs[i], mode);
             console.log(winner)
-            if(!winner) return null;
+            if(!winner) {
+                if(i === 2) mode--;
+                else return null;
+            }
             victories[winner]++;
             console.log(victories)
+            mode++;
         }
-        if(victories.team1 === victories.team2) {
-            let winner = await this.GetWinner(data, logs[2]);
-            if(!winner) return null;
-            victories[winner]++;
-            console.log(winner)
-            console.log(victories)
-        }
+        if(victories.team1 === victories.team2) return null;
         let winner: 'team1' | 'team2' = victories.team1 > victories.team2 ? 'team1' : 'team2';
         let members: Array<GameMemberConfig & {eloChange: number}> = [];
         for(let member of data.team1.concat(data.team2)) {
@@ -59,8 +58,8 @@ export default class BattleResults {
         }
     }
 
-    public static GetWinner (data: EndInteractionDataConfig, log: BattleConfig): 'team1' | 'team2' {
-        if(log.mode !== data.mode.value) return null;
+    public static GetWinner (data: EndInteractionDataConfig, log: BattleConfig, mode: number): 'team1' | 'team2' {
+        if(log.mode !== data.modes[mode].value) return null;
         let team1: boolean;
         if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag)) team1 = true;
         else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag)) team1 = false;
