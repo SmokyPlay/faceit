@@ -42,7 +42,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
             this.reply.embed
                 .setDescription(`Игра создана!\n` +
                     this.data.selected
-                        .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}`).join("\n")
+                        .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}` + '`').join("\n")
                     + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
                 .setThumbnail(interaction.guild.emojis.cache.get(randomMode.emoji).url)
             let button = new Discord.MessageButton()
