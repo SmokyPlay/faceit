@@ -20,7 +20,7 @@ export default class EndInteraction extends AbstractInteraction implements Inter
     private async end(interaction: Discord.SelectMenuInteraction): Promise<InteractionExecutionResultConfig> {
         let member = interaction.member as Discord.GuildMember;
         let logs = await global.brawl.battleLog(this.data.team1.find(m => m.captain).brawl.brawlTag);
-        let log = logs.items.filter(l => BattleTimeParser(l.battleTime) < this.data.startedAt).map(l => l.battle);
+        let log = logs.items.filter(l => BattleTimeParser(l.battleTime) > this.data.startedAt).map(l => l.battle);
         console.log(log.size);
         let results = await BattleResults.BattleResults(this.data, log);
         if(!results) {
