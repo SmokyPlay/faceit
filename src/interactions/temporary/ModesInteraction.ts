@@ -2,14 +2,12 @@ import Discord from "discord.js";
 
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
-import InteractionReplyConfig from "@/types/InteractionReplyConfig";
 import InteractionExecutionResultConfig from "@/types/InteractionExecutionResultConfig";
 import EndInteraction from "@/interactions/temporary/EndInteraction";
 import ModesInteractionDataConfig from "@/types/InteractionsData/ModesInteractionDataConfig";
 
 import properties from "@/properties.json";
 import ReplaceType from "@/types/utils/ReplaceType";
-import StartInteractionDataConfig from "@/types/InteractionsData/StartInteractionDataConfig";
 
 export default class ModesInteraction extends AbstractInteraction implements InteractionConfig {
     public declare data: ModesInteractionDataConfig
@@ -36,14 +34,16 @@ export default class ModesInteraction extends AbstractInteraction implements Int
             return {ended: false};
         }
         else {
+            let maps = properties.maps;
             this.data.selected.push(mode);
             this.data.modes.splice(this.data.modes.indexOf(mode), 1);
             let randomMode = this.data.modes[Math.floor(this.data.modes.length * Math.random())]
             this.data.selected.push(randomMode);
             this.reply.embed
                 .setDescription(`Игра создана!\n` +
-                    this.data.selected.map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}`).join("\n") +
-                    `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
+                    this.data.selected
+                        .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}`).join("\n")
+                    + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
                 .setThumbnail(interaction.guild.emojis.cache.get(randomMode.emoji).url)
             let button = new Discord.MessageButton()
                 .setCustomId(`${interaction.id}-end`)
