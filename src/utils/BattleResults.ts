@@ -20,10 +20,7 @@ export default class BattleResults {
             console.log(gameLogs);
             let winner = this.GetWinner(data, gameLogs, mode);
             console.log(winner)
-            if(!winner) {
-                if(i === 0) mode--;
-                else return null;
-            }
+            if(!winner && (i !== 2)) return null;
             victories[winner]++;
             console.log(victories)
             mode++;
