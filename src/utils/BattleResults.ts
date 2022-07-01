@@ -14,6 +14,7 @@ export default class BattleResults {
         let mode = 0;
         let ranks: Array<UserRankConfig> = properties.ranks;
         for(let i = 0; i < 3; i++) {
+            console.log(data.modes[i]);
             let gameLogs = logs.filter(l => l.mode === data.modes[i].value);
             console.log(`Count: ${i}`);
             console.log(gameLogs);
