@@ -42,6 +42,7 @@ export default class RegistrationInteraction extends AbstractPermanentInteractio
             .setCustomId("accountID")
             .setLabel("ID аккаунта")
             .setPlaceholder("#000000000")
+            .setRequired(true)
             .setStyle("SHORT")
         let accountIDActionRow = new MessageActionRow<TextInputComponent>().addComponents(accountIDInput);
         let modal = new Modal()
