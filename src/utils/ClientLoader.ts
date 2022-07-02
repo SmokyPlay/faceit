@@ -54,8 +54,8 @@ export default class ClientLoader {
           if(!channel) return;
           let message = await channel.messages.fetch(interaction.messageId ?? '').catch(() => undefined);
           if(!message) {
-            interaction.messageId = message.id;
             message = await channel.send(content);
+            interaction.messageId = message.id;
           }
           else await message.edit(content);
           global.client.cache.permanentInteractions.set(message.id, interaction);

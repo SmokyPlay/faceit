@@ -14,7 +14,7 @@ export default class InteractionsHandler {
         let idSplit = this.interaction.customId.split("-")
         let inter = global.client.cache.interactions.get(idSplit[0]);
         let permInter = global.client.cache.permanentInteractions.get(this.interaction.message.id);
-        if(permInter) return this.handlePermanent(permInter);
+        if(permInter) return this.handlePermanent(permInter)
         if(!inter) {
             return this.interaction.reply({
                 embeds:
@@ -52,22 +52,8 @@ export default class InteractionsHandler {
 
     private async handlePermanent(inter: AbstractPermanentInteraction) {
         if(!this.interaction.isButton() && !this.interaction.isSelectMenu()) return
-        if(inter.processing) {
-            return this.interaction.reply({
-                embeds:
-                    [CommandError.other(this.interaction.member as Discord.GuildMember,
-                        "Данное взаимодействие уже выполняется, повторите попытку позже",
-                        "Взаимодействие недоступно")],
-                ephemeral: true
-            })
-        }
-        inter.processing = true;
-        global.client.cache.permanentInteractions.set(inter.messageId, inter);
-        await this.interaction.deferReply({ephemeral: true});
         let result = await inter.execute(this.interaction, this.interaction.customId);
-        await this.interaction.editReply(result.reply);
-        if(result.interaction) global.client.cache.interactions.set(this.interaction.id, result.interaction);
-        inter.processing = false;
-        global.client.cache.permanentInteractions.set(inter.messageId, inter);
+        if(result?.reply) await this.interaction.reply(result.reply);
+        if(result?.interaction) global.client.cache.interactions.set(this.interaction.id, result.interaction);
     }
 }

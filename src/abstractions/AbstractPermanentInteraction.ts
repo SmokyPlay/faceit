@@ -7,7 +7,6 @@ export default abstract class AbstractPermanentInteraction implements PermanentI
 
     public abstract channelId: string
     public abstract messageId?: string
-    public processing: boolean = false
 
     public abstract message(): MessagePayload | MessageOptions
 
