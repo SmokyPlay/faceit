@@ -23,7 +23,7 @@ export default class StartCommand extends AbstractCommand implements ChatInputAp
             return {reply: {embeds:
                         [CommandError.other(member, "Эту команду можно использовать только находясь в лобби")]}}
         }
-        if(member.voice.channel.members.size < 6) {
+        if(member.voice.channel.members.size < 1) {
             return {reply: {embeds: [
                 CommandError.other(member, "Для начала игры в лобби должно быть 6 игроков",
                     "Недостаточно игроков")], ephemeral: true}}
@@ -33,6 +33,7 @@ export default class StartCommand extends AbstractCommand implements ChatInputAp
                     [CommandError.other(member, "Вы не зарегистрированы в системе")]}}
         let embed = new MessageEmbed()
             .setColor('#007ef8')
+            .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/992896887554322506/search.png")
             .setTitle("Игра")
             .setDescription("Нажмите `Готово` чтобы присоединиться")
             .addField("Участники", member.toString())

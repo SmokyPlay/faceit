@@ -25,7 +25,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
             this.allowedUsers = [this.data.team2.find(m => m.captain).discord.id];
             this.reply.embed
                 .setColor('#007ef8')
-                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team2.find(m => m.captain).toString()}`)
+                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team2.find(m => m.captain).discord.toString()}`)
             let menu = this.reply.row.components[0] as MessageSelectMenu;
             menu.setOptions(this.data.modes);
             this.reply.row.setComponents(menu)
@@ -40,11 +40,11 @@ export default class ModesInteraction extends AbstractInteraction implements Int
             let randomMode = this.data.modes[Math.floor(this.data.modes.length * Math.random())]
             this.data.selected.push(randomMode);
             this.reply.embed
+                .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/992899959592595536/unknown.png")
                 .setDescription(`Игра создана!\n` +
                     this.data.selected
                         .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}` + '`').join("\n")
                     + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
-                .setThumbnail(interaction.guild.emojis.cache.get(randomMode.emoji).url)
             let button = new MessageButton()
                 .setCustomId(`${interaction.id}-end`)
                 .setStyle("PRIMARY")

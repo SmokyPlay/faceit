@@ -24,10 +24,10 @@ export default class StartInteraction extends AbstractInteraction implements Int
             await interaction.followUp({embeds: [CommandError.other(member, "Вас нет в лобби, в котором проходит игра")], ephemeral: true})
             return {ended: false}
         }
-        if(this.data.members.find(m => m.discord === member)) {
+        /*if(this.data.members.find(m => m.discord === member)) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вы уже присоединились к этой игре")], ephemeral: true})
             return {ended: false}
-        }
+        }*/
         let user = await global.mongo.findOne<User>('users', {id: member.id});
         if(!user) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вы не зарегистрированы в системе")], ephemeral: true})
@@ -39,6 +39,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
             await this.CreateTeams()
             this.reply.embed.fields = [];
             this.reply.embed
+                .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/992898514600349776/unknown.png")
                 .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team1.find(m => m.captain).discord.toString()}`)
                 .addField("Команда 1",
                     this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
@@ -92,5 +93,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
         this.data.members = []
         this.data.team1[Math.floor(this.data.team1.length * Math.random())].captain = true;
         this.data.team2[Math.floor(this.data.team2.length * Math.random())].captain = true;
+        this.data.team1.sort((a, b) => a.captain === b.captain ? 0 : a.captain ? -1 : 1);
+        this.data.team2.sort((a, b) => a.captain === b.captain ? 0 : a.captain ? -1 : 1);
     }
 }

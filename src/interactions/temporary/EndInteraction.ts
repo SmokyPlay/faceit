@@ -36,14 +36,19 @@ export default class EndInteraction extends AbstractInteraction implements Inter
         }
         this.reply.embed.fields = [];
         this.reply.embed
+            .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/992901019283488818/unknown.png")
             .setDescription(`Игра окончена!\nПобедила команда #${results.winner.replace('team', '')}`)
             .addField("Команда 1",
-                this.data.team1.map(memb => memb.toString()
+                this.data.team1.map(memb =>
+                    (results.members.find(m => m === memb).eloChange >= 0 ? '<:up:992903003264778353> ' : '<:down:992903114543869952> ')
+                    + memb.toString()
                     + (results.members.find(m => m === memb).eloChange >= 0 ? '+' : '')
                     + `${results.members.find(m => m === memb).eloChange} ELO`)
                     .join("\n"), true)
             .addField("Команда 2",
-                this.data.team2.map(memb => memb.toString()
+                this.data.team2.map(memb =>
+                    (results.members.find(m => m === memb).eloChange >= 0 ? '<:up:992903003264778353> ' : '<:down:992903114543869952> ')
+                    + memb.toString()
                     + (results.members.find(m => m === memb).eloChange >= 0 ? '+' : '')
                     + `${results.members.find(m => m === memb).eloChange} ELO`)
                     .join("\n"), true)
