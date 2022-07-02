@@ -23,7 +23,7 @@ export default class StartCommand extends AbstractCommand implements ChatInputAp
             return {reply: {embeds:
                         [CommandError.other(member, "Эту команду можно использовать только находясь в лобби")]}}
         }
-        if(member.voice.channel.members.size < 1) {
+        if(member.voice.channel.members.size < 6) {
             return {reply: {embeds: [
                 CommandError.other(member, "Для начала игры в лобби должно быть 6 игроков",
                     "Недостаточно игроков")], ephemeral: true}}

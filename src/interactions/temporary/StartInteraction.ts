@@ -24,10 +24,10 @@ export default class StartInteraction extends AbstractInteraction implements Int
             await interaction.followUp({embeds: [CommandError.other(member, "Вас нет в лобби, в котором проходит игра")], ephemeral: true})
             return {ended: false}
         }
-        /*if(this.data.members.find(m => m.discord === member)) {
+        if(this.data.members.find(m => m.discord === member)) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вы уже присоединились к этой игре")], ephemeral: true})
             return {ended: false}
-        }*/
+        }
         let user = await global.mongo.findOne<User>('users', {id: member.id});
         if(!user) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вы не зарегистрированы в системе")], ephemeral: true})
