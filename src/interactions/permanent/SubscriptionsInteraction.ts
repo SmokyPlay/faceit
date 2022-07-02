@@ -75,6 +75,6 @@ export default class SubscriptionsInteraction extends AbstractPermanentInteracti
         setTimeout(() => {
             member.roles.remove("782544002544959518");
         }, 5000)
-        return {reply: {embeds: [embed]}};
+        return {reply: {embeds: [embed], ephemeral: true}};
     }
 }
