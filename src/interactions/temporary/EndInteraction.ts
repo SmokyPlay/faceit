@@ -41,14 +41,14 @@ export default class EndInteraction extends AbstractInteraction implements Inter
             .addField("Команда 1",
                 this.data.team1.map(memb =>
                     (results.members.find(m => m === memb).eloChange >= 0 ? '<:up:992903003264778353> ' : '<:down:992903114543869952> ')
-                    + memb.toString()
+                    + memb.discord.toString() + ' '
                     + (results.members.find(m => m === memb).eloChange >= 0 ? '+' : '')
                     + `${results.members.find(m => m === memb).eloChange} ELO`)
                     .join("\n"), true)
             .addField("Команда 2",
                 this.data.team2.map(memb =>
                     (results.members.find(m => m === memb).eloChange >= 0 ? '<:up:992903003264778353> ' : '<:down:992903114543869952> ')
-                    + memb.toString()
+                    + memb.discord.toString() + ' '
                     + (results.members.find(m => m === memb).eloChange >= 0 ? '+' : '')
                     + `${results.members.find(m => m === memb).eloChange} ELO`)
                     .join("\n"), true)
