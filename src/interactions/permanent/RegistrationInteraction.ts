@@ -17,8 +17,8 @@ import CommandError from "@/utils/CommandError";
 import Subscription from "@/types/database/Subscription";
 
 export default class RegistrationInteraction extends AbstractPermanentInteraction implements PermanentInteractionConfig {
-    public channelId = "984116279566823424"
-    public messageId? = "992858399312203927"
+    public channelId = "992880007812743188"
+    public messageId? = "992882901509226596"
 
     public message(): MessagePayload | MessageOptions {
         let embed = new MessageEmbed()
