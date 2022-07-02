@@ -4,17 +4,12 @@ import {
     MessagePayload,
     MessageOptions,
     MessageEmbed,
-    MessageSelectMenu,
     MessageActionRow,
     SelectMenuInteraction,
-    GuildMember, MessageButton, Modal, TextInputComponent, ModalSubmitInteraction
+    MessageButton, Modal, TextInputComponent, ModalSubmitInteraction
 } from "discord.js";
-import SubscriptionConfig from "@/types/SubscriptionConfig";
-import properties from '@/properties.json'
 import PermanentInteractionExecutionResultConfig from "@/types/PermanentInteractionExecutionResultConfig";
 import User from "@/types/database/User";
-import CommandError from "@/utils/CommandError";
-import Subscription from "@/types/database/Subscription";
 
 export default class RegistrationInteraction extends AbstractPermanentInteraction implements PermanentInteractionConfig {
     public channelId = "992880007812743188"

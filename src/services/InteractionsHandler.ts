@@ -1,11 +1,11 @@
-import Discord from "discord.js";
+import { GuildMember, Interaction } from "discord.js";
 import CommandError from "@/utils/CommandError";
 import AbstractPermanentInteraction from "@/abstractions/AbstractPermanentInteraction";
 
 export default class InteractionsHandler {
-    public interaction: Discord.Interaction
+    public interaction: Interaction
 
-    constructor(interaction: Discord.Interaction) {
+    constructor(interaction: Interaction) {
         this.interaction = interaction;
     }
 
@@ -18,7 +18,7 @@ export default class InteractionsHandler {
         if(!inter) {
             return this.interaction.reply({
                 embeds:
-                    [CommandError.other(this.interaction.member as Discord.GuildMember,
+                    [CommandError.other(this.interaction.member as GuildMember,
                         "Данное взаимодействие больше недоступно", "Взаимодействие недоступно")],
                 ephemeral: true
             })
@@ -26,7 +26,7 @@ export default class InteractionsHandler {
         if(inter.processing) {
             return this.interaction.reply({
                 embeds:
-                    [CommandError.other(this.interaction.member as Discord.GuildMember,
+                    [CommandError.other(this.interaction.member as GuildMember,
                         "Данное взаимодействие уже выполняется, повторите попытку позже",
                         "Взаимодействие недоступно")],
                 ephemeral: true
@@ -35,7 +35,7 @@ export default class InteractionsHandler {
         if(inter.allowedUsers && !inter.allowedUsers?.includes(this.interaction.user.id)) {
             return this.interaction.reply({
                 embeds:
-                    [CommandError.other(this.interaction.member as Discord.GuildMember,
+                    [CommandError.other(this.interaction.member as GuildMember,
                         "Вам недоступно это взаимодействие", "Взаимодействие недоступно")],
                 ephemeral: true
             })

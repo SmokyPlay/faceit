@@ -1,7 +1,6 @@
 import AbstractEvent from "@/abstractions/AbstractEvent";
 import EventConfig from "@/types/EventConfig";
 import ClientLoader from "@/utils/ClientLoader";
-import BattleTimeParser from "@/utils/BattleTimeParser";
 
 export default class ReadyEvent extends AbstractEvent implements EventConfig {
   public name = 'ready'

@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import { ButtonInteraction, GuildMember, MessageActionRow,MessageSelectMenu } from "discord.js";
 
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
@@ -18,8 +18,8 @@ export default class StartInteraction extends AbstractInteraction implements Int
         super(options);
     }
 
-    private async ready(interaction: Discord.ButtonInteraction): Promise<InteractionExecutionResultConfig> {
-        let member = interaction.member as Discord.GuildMember;
+    private async ready(interaction: ButtonInteraction): Promise<InteractionExecutionResultConfig> {
+        let member = interaction.member as GuildMember;
         if(member.voice?.channel?.id !== this.data.lobby.voice) {
             await interaction.followUp({embeds: [CommandError.other(member, "Вас нет в лобби, в котором проходит игра")], ephemeral: true})
             return {ended: false}
@@ -46,11 +46,11 @@ export default class StartInteraction extends AbstractInteraction implements Int
                 .addField("Команда 2",
                     this.data.team2.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
                         .join("\n"), true)
-            let menu = new Discord.MessageSelectMenu()
+            let menu = new MessageSelectMenu()
                 .setCustomId(`${interaction.id}-mode`)
                 .setPlaceholder(`Выберите режим`)
                 .addOptions(properties.modes)
-            this.reply.row = new Discord.MessageActionRow()
+            this.reply.row = new MessageActionRow()
                 .setComponents(menu)
             await interaction.editReply({embeds: [this.reply.embed], components: [this.reply.row]});
             let inter = new ModesInteraction({

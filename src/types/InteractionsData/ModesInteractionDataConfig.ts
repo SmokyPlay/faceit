@@ -1,4 +1,3 @@
-import Discord from "discord.js";
 import LobbyConfig from "@/types/LobbyConfig";
 import ModeConfig from "@/types/ModeConfig";
 import GameMemberConfig from "@/types/GameMemberConfig";

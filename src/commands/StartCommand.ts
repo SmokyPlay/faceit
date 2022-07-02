@@ -1,7 +1,9 @@
-import Discord from "discord.js";
+import {
+    ApplicationCommandOptionData,
+    ChatInputApplicationCommandData,
+    CommandInteraction, GuildMember, MessageActionRow, MessageButton, MessageEmbed
+} from "discord.js";
 import AbstractCommand from "@/abstractions/AbstractCommand";
-import AbstractInteraction from "../abstractions/AbstractInteraction";
-import TestInteraction from "../interactions/temporary/TestInteraction";
 import CommandExecutionResultConfig from "@/types/CommandExecutionResultConfig";
 import CommandError from "@/utils/CommandError";
 import StartInteraction from "@/interactions/temporary/StartInteraction";
@@ -9,13 +11,13 @@ import LobbyConfig from "../types/LobbyConfig";
 import properties from '@/properties.json';
 import User from "@/types/database/User";
 
-export default class StartCommand extends AbstractCommand implements Discord.ChatInputApplicationCommandData {
+export default class StartCommand extends AbstractCommand implements ChatInputApplicationCommandData {
     public name = 'старт'
     public description = "Запускает игру в текущем лобби"
-    public options: Array<Discord.ApplicationCommandOptionData> = []
+    public options: Array<ApplicationCommandOptionData> = []
 
-    public async execute(interaction: Discord.CommandInteraction): Promise<CommandExecutionResultConfig> {
-        let member = interaction.member as Discord.GuildMember;
+    public async execute(interaction: CommandInteraction): Promise<CommandExecutionResultConfig> {
+        let member = interaction.member as GuildMember;
         let lobby: LobbyConfig = properties.lobbies.find(l => l.voice === member.voice?.channel?.id);
         if(!lobby) {
             return {reply: {embeds:
@@ -29,16 +31,16 @@ export default class StartCommand extends AbstractCommand implements Discord.Cha
         let user = await global.mongo.findOne<User>('users', {id: member.id});
         if(!user) return {reply: {embeds:
                     [CommandError.other(member, "Вы не зарегистрированы в системе")]}}
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
             .setColor('#007ef8')
             .setTitle("Игра")
             .setDescription("Нажмите `Готово` чтобы присоединиться")
             .addField("Участники", member.toString())
-        let readyButton = new Discord.MessageButton()
+        let readyButton = new MessageButton()
             .setCustomId(`${interaction.id}-ready`)
             .setStyle("PRIMARY")
             .setLabel("Готово")
-        let row = new Discord.MessageActionRow()
+        let row = new MessageActionRow()
             .addComponents(readyButton);
         let inter = new StartInteraction({
             id: interaction.id,

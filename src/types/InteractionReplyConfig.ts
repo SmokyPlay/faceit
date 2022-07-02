@@ -1,4 +1,4 @@
-import {MessageEmbed, MessageActionRow} from "discord.js";
+import { MessageEmbed, MessageActionRow } from "discord.js";
 
 export default interface InteractionReplyConfig {
     embed?: MessageEmbed

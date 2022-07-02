@@ -1,10 +1,10 @@
+import { TextChannel } from "discord.js";
 import fs from "fs";
 
 import AbstractEvent from "@/abstractions/AbstractEvent";
 import AbstractCommand from "@/abstractions/AbstractCommand";
 import AbstractJob from "@/abstractions/AbstractJob";
 import AbstractPermanentInteraction from "@/abstractions/AbstractPermanentInteraction";
-import {TextChannel} from "discord.js";
 
 export default class ClientLoader {
   public static loadEvents(path: string = process.cwd() + "/dist/src/events"): void {

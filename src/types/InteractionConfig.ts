@@ -1,4 +1,3 @@
-import {MessageActionRow, MessageEmbed} from "discord.js";
 import InteractionReplyConfig from "@/types/InteractionReplyConfig";
 
 export default interface InteractionConfig {

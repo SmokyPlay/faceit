@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import { Interaction } from "discord.js";
 
 import AbstractEvent from "@/abstractions/AbstractEvent";
 import EventConfig from "@/types/EventConfig";
@@ -8,7 +8,7 @@ import InteractionsHandler from "@/services/InteractionsHandler";
 export default class ReadyEvent extends AbstractEvent implements EventConfig {
   public name = 'interactionCreate'
 
-  public async execute(interaction: Discord.Interaction) {
+  public async execute(interaction: Interaction) {
     if(interaction.isCommand()) {
       let handler = new CommandsHandler(interaction);
       return handler.handle()

@@ -1,9 +1,9 @@
-import Discord from "discord.js";
+import { CommandInteraction } from "discord.js";
 
 export default class CommandsHandler {
-    public interaction: Discord.CommandInteraction
+    public interaction: CommandInteraction
 
-    constructor(interaction: Discord.CommandInteraction) {
+    constructor(interaction: CommandInteraction) {
         this.interaction = interaction;
     }
 

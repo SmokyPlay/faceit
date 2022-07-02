@@ -1,15 +1,16 @@
-import Discord from "discord.js";
+import {
+    ApplicationCommandOptionData,
+    ChatInputApplicationCommandData,
+    CommandInteraction, GuildMember
+} from "discord.js";
 import AbstractCommand from "@/abstractions/AbstractCommand";
 import CommandExecutionResultConfig from "@/types/CommandExecutionResultConfig";
-import properties from '@/properties.json';
-import UserRankConfig from "@/types/UserRankConfig";
 import User from "@/types/database/User";
-import CommandError from "@/utils/CommandError";
 
-export default class BalanceManagerCommand extends AbstractCommand implements Discord.ChatInputApplicationCommandData {
+export default class BalanceManagerCommand extends AbstractCommand implements ChatInputApplicationCommandData {
     public name = 'баланс-менеджер'
     public description = "Добавляет/забирает деньги или устанавливает баланс участника"
-    public options: Array<Discord.ApplicationCommandOptionData> = [
+    public options: Array<ApplicationCommandOptionData> = [
         {
             type: "USER",
             name: "участник",
@@ -35,8 +36,8 @@ export default class BalanceManagerCommand extends AbstractCommand implements Di
         }
     ]
 
-    public async execute(interaction: Discord.CommandInteraction): Promise<CommandExecutionResultConfig> {
-        let member = interaction.options.getMember("участник") as Discord.GuildMember;
+    public async execute(interaction: CommandInteraction): Promise<CommandExecutionResultConfig> {
+        let member = interaction.options.getMember("участник") as GuildMember;
         let action = interaction.options.getString("действие");
         if(!member) return {reply: {content: "Участник не найден"}}
         let user = await global.mongo.findOne<User>('users', {id: member.id});

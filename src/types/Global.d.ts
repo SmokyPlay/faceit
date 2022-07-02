@@ -1,4 +1,3 @@
-import Discord from "discord.js";
 import BrawlStars from "@/structures/BrawlStars";
 
 import Client from '@/structures/Client'
@@ -7,7 +6,6 @@ import MongoDB from "@/structures/MongoDB";
 declare global {
   namespace NodeJS {
     interface Global {
-      Discord: Discord
       brawl: BrawlStars
       client: Client
       mongo: MongoDB

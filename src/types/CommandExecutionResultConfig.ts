@@ -1,7 +1,7 @@
-import Discord from "discord.js";
+import { InteractionReplyOptions, ReplyMessageOptions } from "discord.js";
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 
 export default interface CommandExecutionResultConfig {
-    reply: string | Discord.InteractionReplyOptions | Discord.ReplyMessageOptions
+    reply: string | InteractionReplyOptions | ReplyMessageOptions
     interaction?: AbstractInteraction
 }

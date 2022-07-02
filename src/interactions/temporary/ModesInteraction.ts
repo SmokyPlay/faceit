@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import {MessageButton, MessageSelectMenu, SelectMenuInteraction} from "discord.js";
 
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
@@ -16,7 +16,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
         super(options);
     }
 
-    private async mode(interaction: Discord.SelectMenuInteraction): Promise<InteractionExecutionResultConfig> {
+    private async mode(interaction: SelectMenuInteraction): Promise<InteractionExecutionResultConfig> {
         let value = interaction.values[0];
         let mode = this.data.modes.find(m => m.value === value);
         if(!this.data.oneSelected) {
@@ -25,8 +25,8 @@ export default class ModesInteraction extends AbstractInteraction implements Int
             this.allowedUsers = [this.data.team2.find(m => m.captain).discord.id];
             this.reply.embed
                 .setColor('#007ef8')
-                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team2.find(m => m.captain).discord.toString()}`)
-            let menu = this.reply.row.components[0] as Discord.MessageSelectMenu;
+                .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team2.find(m => m.captain).toString()}`)
+            let menu = this.reply.row.components[0] as MessageSelectMenu;
             menu.setOptions(this.data.modes);
             this.reply.row.setComponents(menu)
             await interaction.editReply({embeds: [this.reply.embed], components: [this.reply.row]});
@@ -45,7 +45,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                         .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}` + '`').join("\n")
                     + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
                 .setThumbnail(interaction.guild.emojis.cache.get(randomMode.emoji).url)
-            let button = new Discord.MessageButton()
+            let button = new MessageButton()
                 .setCustomId(`${interaction.id}-end`)
                 .setStyle("PRIMARY")
                 .setLabel("Закончить")
