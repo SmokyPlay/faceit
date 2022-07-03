@@ -63,7 +63,7 @@ export default class EloManagerCommand extends AbstractCommand implements ChatIn
                 result = {reply: {content: `Эло участника **${member.user.tag}** установлено: ${'`' + amount + ' ELO`'}`}};
                 break;
         }
-        let rank = ranks.find(r => r.elo === user.elo);
+        let rank = ranks.find(r => r.elo >= user.elo && r.elo < user.elo);
         await member.roles.add(rank.role);
         await global.mongo.save('users', user);
         return result;
