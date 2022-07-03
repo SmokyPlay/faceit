@@ -66,9 +66,11 @@ export default class BattleResults {
         }
         for(let log of logs) {
             let team1: boolean;
+            console.log(log.teams)
             if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag)) team1 = true;
             else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag)) team1 = false;
             else return null;
+            console.log("Validated team1")
             let valid: boolean;
             data[team1 ? "team1" : "team2"].forEach(member => {
                 valid = !!log.teams[0].find(m => m.tag === member.brawl.brawlTag);
