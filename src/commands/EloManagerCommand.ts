@@ -48,7 +48,7 @@ export default class EloManagerCommand extends AbstractCommand implements ChatIn
         let amount = interaction.options.getInteger("количество");
         if(!user.elo) user.elo = 100;
         let result;
-        await member.roles.remove(ranks.find(r => r.elo === user.elo).role);
+        await member.roles.remove(ranks.find((r, i) => r.elo <= user.elo && ranks[i+1].elo > user.elo).role);
         switch (action) {
             case 'add':
                 user.elo += amount;
