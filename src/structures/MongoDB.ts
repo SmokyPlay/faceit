@@ -22,7 +22,7 @@ export default class MongoDB extends MongoClient {
         return this.db(db).collection(collection).findOne(filter)
     }
 
-    public find<T>(collection: string, filter: Partial<T>, db: string = process.env.DB_NAME): Promise<Array<T>> {
+    public find<T>(collection: string, filter?: Partial<T>, db: string = process.env.DB_NAME): Promise<Array<T>> {
         return this.db(db).collection(collection).find(filter).toArray()
     }
 
