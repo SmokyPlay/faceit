@@ -25,7 +25,7 @@ export default class LeaderboardCommand extends AbstractCommand implements ChatI
         if(page <= 0) page = 1;
         let embed = new MessageEmbed()
             .setColor('#007ef8')
-            .setTitle("Лидеры сервера")
+            .setAuthor({name: "Лидеры сервера", iconURL: interaction.guild.iconURL({dynamic: true})})
             .setDescription("")
         let users = await global.mongo.find<User>('users');
         let pages = 3;
