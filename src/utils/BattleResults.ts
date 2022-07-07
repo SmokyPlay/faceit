@@ -77,12 +77,14 @@ export default class BattleResults {
             console.log(`Logs team1:`, log.teams[0])
             console.log(`Logs team2:`, log.teams[1])
             data[team1 ? "team1" : "team2"].forEach(member => {
-                console.log(member)
+                console.log(member.brawl)
                 valid = !!log.teams[0].find(m => m.tag === member.brawl.brawlTag);
+                console.log(`Includes: ${valid}`)
             })
             data[!team1 ? "team1" : "team2"].forEach(member => {
-                console.log(member)
+                console.log(member.brawl)
                 valid = !!log.teams[1].find(m => m.tag === member.brawl.brawlTag);
+                console.log(`Includes: ${valid}`)
             })
             console.log(valid)
             if(!valid) return null;
