@@ -6,4 +6,6 @@ export default interface User {
     victories: number
     defeats: number
     balance: number
+    promoCode: string
+    promoCodeStarted: Date
 }

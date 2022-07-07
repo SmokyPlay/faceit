@@ -6,6 +6,7 @@ import {
 import AbstractCommand from "@/abstractions/AbstractCommand";
 import CommandExecutionResultConfig from "@/types/CommandExecutionResultConfig";
 import User from "@/types/database/User";
+import PromoCode from "@/types/database/PromoCode";
 
 export default class BalanceManagerCommand extends AbstractCommand implements ChatInputApplicationCommandData {
     public name = 'баланс-менеджер'
@@ -48,6 +49,7 @@ export default class BalanceManagerCommand extends AbstractCommand implements Ch
         switch (action) {
             case 'add':
                 user.balance += amount;
+                if(user.promoCode) await this.editPromoCode(user.promoCode, amount);
                 result = {reply: {content: `Участнику **${member.user.tag}** добавлено ${'`' + amount + '₽`'}`}};
                 break;
             case 'remove':
@@ -61,5 +63,12 @@ export default class BalanceManagerCommand extends AbstractCommand implements Ch
         }
         await global.mongo.save('users', user);
         return result;
+    }
+
+    private async editPromoCode(code: string, balance: number) {
+        let promoCode = await global.mongo.findOne<PromoCode>('promoCodes', {code: code});
+        if(!promoCode) return;
+        promoCode.balance += balance;
+        await global.mongo.save('promoCodes', promoCode);
     }
 }

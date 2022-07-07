@@ -30,6 +30,7 @@ export default class StatisticsCommand extends AbstractCommand implements ChatIn
                 month: 'long',
                 day: 'numeric'
             }))
+        if(user.promoCode) embed.addField("Код автора", user.promoCode);
         return {reply: {embeds: [embed]}}
     }
 }
