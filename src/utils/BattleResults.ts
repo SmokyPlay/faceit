@@ -73,7 +73,7 @@ export default class BattleResults {
             else return null;
 
             console.log(`Team1: ${team1}`);
-            let valid: boolean;
+            let valid = true;
             console.log(`Logs team1:`, log.teams[0])
             console.log(`Logs team2:`, log.teams[1])
             data[team1 ? "team1" : "team2"].forEach(member => {
