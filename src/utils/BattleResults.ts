@@ -4,6 +4,7 @@ import BattleResultsConfig from "@/types/BattleResultsConfig";
 import properties from '@/properties.json';
 import UserRankConfig from "@/types/UserRankConfig";
 import GameMemberConfig from "@/types/GameMemberConfig";
+import User from "@/types/database/User";
 
 export default class BattleResults {
     public static async BattleResults (data: EndInteractionDataConfig, logs: Array<BattleConfig>): Promise<BattleResultsConfig> {
@@ -31,6 +32,7 @@ export default class BattleResults {
         for(let member of data.team1.concat(data.team2)) {
             let rank = ranks.find((r, i) => (member.brawl.elo >= r.elo) && (member.brawl.elo < ranks[i+1].elo));
             if(data[winner].includes(member)) {
+                member.brawl = await global.mongo.findOne<User>('users', {id: member.discord.id});
                 members.push(Object.assign(member, {eloChange: rank.victory}))
                 member.brawl.elo += rank.victory;
                 member.brawl.battles++;
