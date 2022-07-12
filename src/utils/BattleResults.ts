@@ -70,8 +70,8 @@ export default class BattleResults {
             let team1: boolean;
             console.log(log.teams)
             ///console.log(data.team1[0])
-            if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag)) team1 = true;
-            else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag)) team1 = false;
+            if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag.replace(/O/g, "0"))) team1 = true;
+            else if(log.teams[0].find(p => p.tag === data.team2[0].brawl.brawlTag.replace(/O/g, "0"))) team1 = false;
             else return null;
 
             console.log(`Team1: ${team1}`);
