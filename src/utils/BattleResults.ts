@@ -1,4 +1,4 @@
-import EndInteractionDataConfig from "@/types/InteractionsData/EndInteractionDataConfig";
+import EndInteractionData from "@/types/InteractionsData/EndInteractionData";
 import BattleConfig from "@/types/BrawlStars/BattleConfig";
 import BattleResultsConfig from "@/types/BattleResultsConfig";
 import properties from '@/properties.json';
@@ -7,7 +7,7 @@ import GameMemberConfig from "@/types/GameMemberConfig";
 import User from "@/types/database/User";
 
 export default class BattleResults {
-    public static async BattleResults (data: EndInteractionDataConfig, logs: Array<BattleConfig>): Promise<BattleResultsConfig> {
+    public static async BattleResults (data: EndInteractionData, logs: Array<BattleConfig>): Promise<BattleResultsConfig> {
         let victories = {
             team1: 0,
             team2: 0
@@ -61,7 +61,7 @@ export default class BattleResults {
         }
     }
 
-    public static GetWinner (data: EndInteractionDataConfig, logs: Array<BattleConfig>, mode: number): 'team1' | 'team2' {
+    public static GetWinner (data: EndInteractionData, logs: Array<BattleConfig>, mode: number): 'team1' | 'team2' {
         let victories = {
             team1: 0,
             team2: 0

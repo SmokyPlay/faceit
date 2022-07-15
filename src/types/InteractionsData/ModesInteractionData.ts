@@ -2,10 +2,11 @@ import LobbyConfig from "@/types/LobbyConfig";
 import ModeConfig from "@/types/ModeConfig";
 import GameMemberConfig from "@/types/GameMemberConfig";
 
-export default interface EndInteractionDataConfig {
+export default interface ModesInteractionData {
     team1: Array<GameMemberConfig>
     team2: Array<GameMemberConfig>
     lobby: LobbyConfig
     modes: Array<ModeConfig>
-    startedAt: Date
+    selected: Array<ModeConfig>
+    oneSelected: boolean
 }

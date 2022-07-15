@@ -33,6 +33,8 @@ export default class RegistrationInteraction extends AbstractPermanentInteractio
     }
 
     private async registration(interaction: SelectMenuInteraction): Promise<PermanentInteractionExecutionResultConfig> {
+        let user = await global.mongo.findOne<User>('users', {id: interaction.user.id});
+        if(user) return {reply: {content: "Вы уже зарегистрированы в системе"}}
         let accountIDInput = new TextInputComponent()
             .setCustomId("accountID")
             .setLabel("ID аккаунта")

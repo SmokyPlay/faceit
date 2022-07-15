@@ -4,15 +4,15 @@ import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
 import InteractionExecutionResultConfig from "@/types/InteractionExecutionResultConfig";
 import EndInteraction from "@/interactions/temporary/EndInteraction";
-import ModesInteractionDataConfig from "@/types/InteractionsData/ModesInteractionDataConfig";
+import ModesInteractionData from "@/types/InteractionsData/ModesInteractionData";
 
 import properties from "@/properties.json";
 import ReplaceType from "@/types/utils/ReplaceType";
 
 export default class ModesInteraction extends AbstractInteraction implements InteractionConfig {
-    public declare data: ModesInteractionDataConfig
+    public declare data: ModesInteractionData
 
-    public constructor(options: ReplaceType<InteractionConfig, 'data', ModesInteractionDataConfig>) {
+    public constructor(options: ReplaceType<InteractionConfig, 'data', ModesInteractionData>) {
         super(options);
     }
 

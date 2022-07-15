@@ -2,7 +2,7 @@ import {GuildMember, SelectMenuInteraction, TextChannel} from "discord.js";
 
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
-import EndInteractionDataConfig from "@/types/InteractionsData/EndInteractionDataConfig";
+import EndInteractionData from "@/types/InteractionsData/EndInteractionData";
 import InteractionExecutionResultConfig from "@/types/InteractionExecutionResultConfig";
 import ReplaceType from "@/types/utils/ReplaceType";
 import BattleResults from "@/utils/BattleResults";
@@ -10,9 +10,9 @@ import CommandError from "@/utils/CommandError";
 import BattleTimeParser from "@/utils/BattleTimeParser";
 
 export default class EndInteraction extends AbstractInteraction implements InteractionConfig {
-    public declare data: EndInteractionDataConfig
+    public declare data: EndInteractionData
 
-    public constructor(options: ReplaceType<InteractionConfig, 'data', EndInteractionDataConfig>) {
+    public constructor(options: ReplaceType<InteractionConfig, 'data', EndInteractionData>) {
         super(options);
     }
 
