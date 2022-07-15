@@ -25,7 +25,11 @@ export default class PlayersInteraction extends AbstractInteraction implements I
         let team: 'team1' | 'team2' = this.data.members.length % 2 ? 'team2' : 'team1';
         this.data[team].push(player);
         this.data.members.splice(this.data.members.indexOf(player), 1);
+        let menu = this.reply.row.components[0] as MessageSelectMenu;
+        menu.setOptions(this.data.members.map(memb => {return {label: memb.discord.displayName, value: memb.discord.id}}));
+        this.reply.row.setComponents(menu);
         let nextSelecting = this.data[team === 'team1' ? 'team2' : 'team1'].find(memb => memb.captain);
+        this.reply.embed.fields = [];
         this.reply.embed
             .setDescription(`Выберите игрока в свою команду\nВыбирает: ${nextSelecting.discord.toString()}`)
             .addField("Команда 1",
