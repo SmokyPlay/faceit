@@ -40,10 +40,17 @@ export default class PremiumInteraction extends AbstractPermanentInteraction imp
         return {embeds: [embed], components: [row]};
     }
 
-    private async subscription(interaction: SelectMenuInteraction): Promise<PermanentInteractionExecutionResultConfig> {
+    private async premium(interaction: SelectMenuInteraction): Promise<PermanentInteractionExecutionResultConfig> {
         let premium: Premium = properties.premium;
         let member = interaction.member as GuildMember;
         let user = await global.mongo.findOne<User>('users', {id: member.id});
+        if(member.roles.cache.get("994986856481566780")) return {
+            reply: {
+                embeds:
+                    [CommandError.other(member, "Вы уже купили премиум подписку")],
+                ephemeral: true
+            }
+        }
         if(user?.balance < premium.price) return {
             reply: {
                 embeds:
