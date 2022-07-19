@@ -18,7 +18,7 @@ import Premium from "@/types/Premium";
 
 export default class PremiumInteraction extends AbstractPermanentInteraction implements PermanentInteractionConfig {
     public channelId = "999034221953830962"
-    public messageId? = "987349319709507594"
+    public messageId? = "999048646291112097"
 
     public message(): MessagePayload | MessageOptions {
         let premium: Premium = properties.premium;
