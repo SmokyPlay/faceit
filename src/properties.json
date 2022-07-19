@@ -360,5 +360,9 @@
       "price": 252,
       "months": 12
     }
-  ]
+  ],
+  "premium": {
+    "price": 300,
+    "percents": 60
+  }
 }
