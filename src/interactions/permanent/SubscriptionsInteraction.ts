@@ -73,6 +73,7 @@ export default class SubscriptionsInteraction extends AbstractPermanentInteracti
             .setDescription(`Вы купили подписку на ${subscription.label}` + '\n' +
             `С вашего баланса списано ${subscription.price}₽`)
         setTimeout(() => {
+            member.roles.remove("986961407222358076");
             member.roles.remove("782544002544959518");
         }, 5000)
         return {reply: {embeds: [embed], ephemeral: true}};

@@ -11,7 +11,10 @@ export default class SubscriptionsJob extends AbstractJob implements JobConfig {
         for(let user of users) {
             await global.mongo.delete('subscriptions', {id: user.id});
             let member = await global.client.guilds.cache.first().members.fetch(user.id).catch(() => undefined);
-            if(member) await member.roles.add("782544002544959518")
+            if(member) {
+                await member.roles.add("782544002544959518")
+                await member.roles.add("986961407222358076");
+            }
         }
     }
 }
