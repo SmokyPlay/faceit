@@ -11,6 +11,7 @@ import ReplaceType from "@/types/utils/ReplaceType";
 import properties from "@/properties.json";
 import User from "@/types/database/User";
 import PlayersInteraction from "@/interactions/temporary/PlayersInteraction";
+import GameMemberConfig from "@/types/GameMemberConfig";
 
 export default class StartInteraction extends AbstractInteraction implements InteractionConfig {
     public declare data: StartInteractionData
@@ -80,11 +81,18 @@ export default class StartInteraction extends AbstractInteraction implements Int
     }
 
     private CreateCaptains() {
-        let player = this.data.members[Math.floor(this.data.members.length * Math.random())]
+        let players: Array<GameMemberConfig> = [];
+        this.data.members.forEach(member => {
+            if(member.discord.roles.cache.get("994986856481566780")) players.push(member, member);
+            else players.push(member);
+        })
+        let player = players[Math.floor(players.length * Math.random())]
         player.captain = true;
         this.data.team1.push(player)
         this.data.members.splice(this.data.members.indexOf(player), 1);
-        player = this.data.members[Math.floor(this.data.members.length * Math.random())]
+        players.splice(players.indexOf(player), 1);
+        if(players.includes(player)) players.splice(players.indexOf(player), 1);
+        player = players[Math.floor(players.length * Math.random())]
         player.captain = true;
         this.data.team2.push(player)
         this.data.members.splice(this.data.members.indexOf(player), 1);
