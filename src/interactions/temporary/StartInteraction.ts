@@ -86,6 +86,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
             if(member.discord.roles.cache.get("994986856481566780")) players.push(member, member);
             else players.push(member);
         })
+        console.log(players);
         let player = players[Math.floor(players.length * Math.random())]
         player.captain = true;
         this.data.team1.push(player)
