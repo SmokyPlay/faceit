@@ -80,6 +80,21 @@ export default class StartInteraction extends AbstractInteraction implements Int
         return {ended: false};
     }
 
+    private async leave(interaction: ButtonInteraction): Promise<InteractionExecutionResultConfig> {
+        let member = interaction.member as GuildMember;
+        let player = this.data.members.find(m => m.discord.id === member.id)
+        if(!player) {
+            await interaction.followUp({embeds: [CommandError.other(member, "Вы не присоединились к этой игре")], ephemeral: true})
+            return {ended: false}
+        }
+        this.data.members.splice(this.data.members.indexOf(player), 1);
+        this.reply.embed.fields = [];
+        this.reply.embed
+            .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
+        await interaction.editReply({embeds: [this.reply.embed]});
+        return {ended: false};
+    }
+
     private CreateCaptains() {
         let players: Array<GameMemberConfig> = [];
         this.data.members.forEach(member => {

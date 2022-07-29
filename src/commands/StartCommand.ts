@@ -41,8 +41,12 @@ export default class StartCommand extends AbstractCommand implements ChatInputAp
             .setCustomId(`${interaction.id}-ready`)
             .setStyle("PRIMARY")
             .setLabel("Готово")
+        let leaveButton = new MessageButton()
+            .setCustomId(`${interaction.id}-leave`)
+            .setStyle("DANGER")
+            .setLabel("Выйти")
         let row = new MessageActionRow()
-            .addComponents(readyButton);
+            .addComponents(readyButton, leaveButton);
         let inter = new StartInteraction({
             id: interaction.id,
             allowedUsers: null,
