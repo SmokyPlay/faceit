@@ -90,7 +90,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
         this.data.members.splice(this.data.members.indexOf(player), 1);
         this.reply.embed.fields = [];
         this.reply.embed
-            .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
+            .addField("Участники", this.data.members.length ? this.data.members.map(memb => memb.discord.toString()).join("\n") : "‎")
         await interaction.editReply({embeds: [this.reply.embed]});
         return {ended: false};
     }
