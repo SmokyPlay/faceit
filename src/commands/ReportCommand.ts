@@ -22,7 +22,7 @@ export default class ReportCommand extends AbstractCommand implements ChatInputA
         },
         {
             type: "STRING",
-            name: "действие",
+            name: "причина",
             description: "Причина жалобы",
             required: true
         }
@@ -34,11 +34,12 @@ export default class ReportCommand extends AbstractCommand implements ChatInputA
         let reason = interaction.options.getString("причина") as string;
         let embed = new MessageEmbed()
             .setColor('#ff0909')
-            .setAuthor({name: "Жалоба на участника", iconURL: reported.displayAvatarURL({dynamic: true})})
+            .setAuthor({name: `Жалоба на участника ${reported.user.tag}`, iconURL: reported.displayAvatarURL({dynamic: true})})
             .setDescription(`**Причина:** ${reason}`)
-            .addField("Жалобу отправил", member.toString())
+            .addField("Участник", reported.toString(), true)
+            .addField("Жалобу отправил", member.toString(), true)
         let channel = interaction.guild.channels.cache.get("790843189552087050") as TextChannel;
         await channel.send({embeds: [embed]});
-        return {reply: {content: `Жалоба на участника **${reported.user.toString()}** отправлена`}}
+        return {reply: {content: `Жалоба на участника **${reported.user.tag}** отправлена`}}
     }
 }
