@@ -26,6 +26,7 @@ export default class PremiumInteraction extends AbstractPermanentInteraction imp
         let embed = new MessageEmbed()
             .setColor('#007ef8')
             .setTitle("Премиум подписка")
+            .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/1003034166520188988/4562862.png")
             .setDescription(`**Роль:** ${role.toString()}\n\n**Цена:** ${premium.price}₽\n\n` +
             `Данная подписка включает в себя:\n\n` +
             `• Увеличенные призовые награды в конце сезона\n` +
