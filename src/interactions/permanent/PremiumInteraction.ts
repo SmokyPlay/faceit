@@ -26,11 +26,15 @@ export default class PremiumInteraction extends AbstractPermanentInteraction imp
         let embed = new MessageEmbed()
             .setColor('#007ef8')
             .setTitle("Премиум подписка")
-            .setDescription(`**Цена:** ${premium.price}₽\n**Роль:** ${role.toString()}\n` +
-            `С этой ролью ваш шанс стать капитаном в игре повышается на 60%!\n` +
-            `Премиум подписка заканчивается в конце сезона\n` +
-            `Нажмите ${'`' + 'Купить' + '`'} чтобы купить премиум подписку\n` +
-            `Деньги спишутся сразу и в полном объеме`)
+            .setDescription(`**Роль:** ${role.toString()}\n\n**Цена:** ${premium.price}₽\n\n` +
+            `Данная подписка включает в себя:\n\n` +
+            `• Увеличенные призовые награды в конце сезона\n` +
+            `• Увеличенные шансы стать капитаном при создании игрового лобби\n` +
+            `• Возможность пригласить 1 друга на сервер\n` +
+            `• Дополнительный месяц игры\n` +
+            `• Отдельный чат для более быстрой связи с Администрацией\n\n` +
+            `Подписка Premium заканчивается в конце игрового сезона\n` +
+            `Нажмите ${'`' + 'Купить' + '`'} для приобретения товара\n`)
         let button = new MessageButton()
             .setStyle("PRIMARY")
             .setCustomId("premium")
@@ -60,6 +64,9 @@ export default class PremiumInteraction extends AbstractPermanentInteraction imp
         }
         user.balance -= premium.price;
         await global.mongo.save('users', user);
+        let sub = await global.mongo.findOne<Subscription>('subscriptions', {id: member.id});
+        sub.ends = new Date(sub.ends.getTime() + 2592000000)
+        await global.mongo.save('subscriptions', sub)
         await member.roles.add("994986856481566780")
         let embed = new MessageEmbed()
             .setColor('#007ef8')
