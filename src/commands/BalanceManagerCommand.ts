@@ -23,6 +23,7 @@ export default class BalanceManagerCommand extends AbstractCommand implements Ch
             name: "действие",
             description: "Действие с балансом участника",
             choices: [
+                {name: "посмотреть", value: "view"},
                 {name: "добавить", value: "add"},
                 {name: "забрать", value: "remove"},
                 {name: "установить", value: "set"}
@@ -33,7 +34,7 @@ export default class BalanceManagerCommand extends AbstractCommand implements Ch
             type: "INTEGER",
             name: "количество",
             description: "Количество денег",
-            required: true
+            required: false
         }
     ]
 
@@ -44,9 +45,13 @@ export default class BalanceManagerCommand extends AbstractCommand implements Ch
         let user = await global.mongo.findOne<User>('users', {id: member.id});
         if(!user) return {reply: {content: "Участник не зарегистрирован в системе"}}
         let amount = interaction.options.getInteger("количество");
+        if(!amount) amount = 0;
         if(!user.balance) user.balance = 0;
         let result;
         switch (action) {
+            case 'view':
+                result = {reply: {content: `У участника **${member.user.tag}** сейчас ${'`' + user.balance + '₽`'}`}};
+                break;
             case 'add':
                 user.balance += amount;
                 if(user.promoCode) await this.editPromoCode(user.promoCode, amount);
