@@ -39,7 +39,7 @@ export default class ReportCommand extends AbstractCommand implements ChatInputA
             .addField("Участник", reported.toString(), true)
             .addField("Жалобу отправил", member.toString(), true)
         let channel = interaction.guild.channels.cache.get("790843189552087050") as TextChannel;
-        await channel.send({embeds: [embed]}).then(msg => msg.startThread({name: "Жалоба"}));
+        await channel.send({content: `${member.toString()}, ${reported.toString()}`, embeds: [embed]}).then(msg => msg.startThread({name: "Жалоба"}));
         return {reply: {content: `Жалоба на участника **${reported.user.tag}** отправлена`}}
     }
 }
