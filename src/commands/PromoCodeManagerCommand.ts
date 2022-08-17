@@ -6,6 +6,7 @@ import {
 import AbstractCommand from "@/abstractions/AbstractCommand";
 import CommandExecutionResultConfig from "@/types/CommandExecutionResultConfig";
 import PromoCode from "@/types/database/PromoCode";
+import User from "@/types/database/User";
 
 export default class PromoCodeManagerCommand extends AbstractCommand implements ChatInputApplicationCommandData {
     public name = 'промокод-менеджер'
@@ -46,6 +47,12 @@ export default class PromoCodeManagerCommand extends AbstractCommand implements 
             case 'delete':
                 if(!promoCode) return {reply: {content: "Такого промокода не существует"}}
                 await global.mongo.delete('promoCodes', {code: code});
+                let users = await global.mongo.find<User>('users', {promoCode: promoCode.code});
+                for(let user of users) {
+                    user.promoCode = null;
+                    user.promoCodeStarted = null;
+                    await global.mongo.save('users', user);
+                }
                 result = {reply: {content: `Промокод ${"`" + code + "`"} удален`}}
                 break;
         }
