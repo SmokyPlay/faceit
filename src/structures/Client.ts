@@ -13,7 +13,8 @@ export default class Client extends Discord.Client {
   public cache: ClientCacheConfig = {
     commands: new Collection<string, AbstractCommand>(),
     interactions: new Collection<string, AbstractInteraction>(),
-    permanentInteractions: new Collection<string, AbstractPermanentInteraction>()
+    permanentInteractions: new Collection<string, AbstractPermanentInteraction>(),
+    bills: new Collection<string, string>()
   }
 
   constructor(token: string, options?: ClientOptions) {

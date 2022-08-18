@@ -5,6 +5,8 @@ dotenv.config();
 
 import BrawlStars from '@/structures/BrawlStars'
 import Client from "@/structures/Client";
+import Qiwi from "@qiwi/bill-payments-node-js-sdk";
+global.qiwi = new Qiwi(process.env.QIWI_PRIVATE);
 
 const client = new Client(process.env.TOKEN, {
   intents: ['GUILDS',

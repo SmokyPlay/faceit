@@ -6,7 +6,7 @@ import {
     MessageEmbed,
     MessageActionRow,
     SelectMenuInteraction,
-    MessageButton, Modal, TextInputComponent, ModalSubmitInteraction
+    MessageButton, Modal, TextInputComponent, ModalSubmitInteraction, ButtonInteraction
 } from "discord.js";
 import PermanentInteractionExecutionResultConfig from "@/types/PermanentInteractionExecutionResultConfig";
 import User from "@/types/database/User";
@@ -32,7 +32,7 @@ export default class RegistrationInteraction extends AbstractPermanentInteractio
         return {embeds: [embed], components: [row]};
     }
 
-    private async registration(interaction: SelectMenuInteraction): Promise<PermanentInteractionExecutionResultConfig> {
+    private async registration(interaction: ButtonInteraction): Promise<PermanentInteractionExecutionResultConfig> {
         let user = await global.mongo.findOne<User>('users', {id: interaction.user.id});
         if(user) return {reply: {content: "Вы уже зарегистрированы в системе", ephemeral: true}}
         let accountIDInput = new TextInputComponent()

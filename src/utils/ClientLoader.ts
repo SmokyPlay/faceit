@@ -57,7 +57,7 @@ export default class ClientLoader {
             message = await channel.send(content);
             interaction.messageId = message.id;
           }
-          else await message.edit(content);
+          else await message.edit(content).catch(() => undefined);
           global.client.cache.permanentInteractions.set(message.id, interaction);
         }
       }

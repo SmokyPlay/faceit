@@ -7,5 +7,6 @@ import AbstractPermanentInteraction from "@/abstractions/AbstractPermanentIntera
 export default interface ClientCacheConfig {
   commands: Collection<string, AbstractCommand>
   interactions: Collection<string, AbstractInteraction>
-  permanentInteractions: Collection<string, AbstractPermanentInteraction>
+  permanentInteractions: Collection<string, AbstractPermanentInteraction>,
+  bills: Collection<string, string>
 }

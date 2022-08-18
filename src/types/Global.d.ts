@@ -1,3 +1,4 @@
+import Qiwi from "@qiwi/bill-payments-node-js-sdk";
 import BrawlStars from "@/structures/BrawlStars";
 
 import Client from '@/structures/Client'
@@ -9,6 +10,7 @@ declare global {
       brawl: BrawlStars
       client: Client
       mongo: MongoDB
+      qiwi: Qiwi
     }
 
     interface ProcessEnv {
@@ -18,6 +20,8 @@ declare global {
       DB_NAME: string
       HOST: string
       PORT: number
+      QIWI_PUBLIC: string
+      QIWI_PRIVATE: string
     }
   }
 }
