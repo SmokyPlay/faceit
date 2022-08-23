@@ -1,4 +1,4 @@
-import {GuildMember, SelectMenuInteraction, TextChannel} from "discord.js";
+import {GuildMember, Message, SelectMenuInteraction, TextChannel} from "discord.js";
 
 import AbstractInteraction from "@/abstractions/AbstractInteraction";
 import InteractionConfig from "@/types/InteractionConfig";
@@ -8,6 +8,7 @@ import ReplaceType from "@/types/utils/ReplaceType";
 import BattleResults from "@/utils/BattleResults";
 import CommandError from "@/utils/CommandError";
 import BattleTimeParser from "@/utils/BattleTimeParser";
+import {emit} from "cluster";
 
 export default class EndInteraction extends AbstractInteraction implements InteractionConfig {
     public declare data: EndInteractionData
@@ -52,9 +53,12 @@ export default class EndInteraction extends AbstractInteraction implements Inter
                     + (results.members.find(m => m === memb).eloChange >= 0 ? '+' : '')
                     + `${results.members.find(m => m === memb).eloChange} ELO`)
                     .join("\n"), true)
-        await interaction.editReply({embeds: [this.reply.embed]})
+        let reply = await interaction.editReply({embeds: [this.reply.embed]}) as Message;
         let resultsChannel = interaction.guild.channels.cache.get(this.data.lobby.results) as TextChannel
         await resultsChannel.send({embeds: [this.reply.embed]});
+        let logChannel = interaction.guild.channels.cache.get("1011733687152423002") as TextChannel;
+        results.embed.setDescription(`[Перейти к игре]${reply.url}`)
+        await logChannel.send({embeds: [results.embed]})
         return {ended: true}
     }
 }

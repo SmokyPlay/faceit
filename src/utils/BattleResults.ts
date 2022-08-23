@@ -5,6 +5,12 @@ import properties from '@/properties.json';
 import UserRankConfig from "@/types/UserRankConfig";
 import GameMemberConfig from "@/types/GameMemberConfig";
 import User from "@/types/database/User";
+import {MessageEmbed} from "discord.js";
+
+interface GetWinnerResults {
+    winner: 'team1' | 'team2'
+    team1: boolean
+}
 
 export default class BattleResults {
     public static async BattleResults (data: EndInteractionData, logs: Array<BattleConfig>): Promise<BattleResultsConfig> {
@@ -14,6 +20,9 @@ export default class BattleResults {
         }
         let mode = 0;
         let ranks: Array<UserRankConfig> = properties.ranks;
+        let embed = new MessageEmbed()
+            .setColor('#007ef8')
+            .setTitle("Логи")
         for(let i = 0; i < 3; i++) {
             console.log(data.modes[i]);
             let gameLogs = logs.filter(l => l.mode === data.modes[i].value);
@@ -22,27 +31,33 @@ export default class BattleResults {
             let winner = this.GetWinner(data, gameLogs, mode);
             console.log(winner)
             if(!winner && (i !== 2)) return null;
-            victories[winner]++;
+            victories[winner.winner]++;
             console.log(victories)
+            embed.addField(`Игра ${i}`, `Победитель: ${winner}\n` +
+            `Победы: ${victories.team1} : ${victories.team2}\n` +
+            `Команда1: ${winner.team1}`, true)
             mode++;
         }
         if(victories.team1 === victories.team2) return null;
         let winner: 'team1' | 'team2' = victories.team1 > victories.team2 ? 'team1' : 'team2';
         let members: Array<GameMemberConfig & {eloChange: number}> = [];
+        let fieldValue = '';
         for(let member of data.team1.concat(data.team2)) {
             let rank = ranks.find((r, i) => (member.brawl.elo >= r.elo) && (member.brawl.elo < ranks[i+1].elo));
+            member.brawl = await global.mongo.findOne<User>('users', {id: member.discord.id});
             if(data[winner].includes(member)) {
-                member.brawl = await global.mongo.findOne<User>('users', {id: member.discord.id});
-                members.push(Object.assign(member, {eloChange: rank.victory}))
+                fieldValue += `${member.discord.toString()}  ${member.brawl.elo} ELO => ${member.brawl.elo + rank.victory}\n`
                 member.brawl.elo += rank.victory;
                 member.brawl.battles++;
                 member.brawl.victories++;
+                members.push(Object.assign(member, {eloChange: rank.victory}))
                 if(member.brawl.elo >= ranks[rank.rank].elo) {
                     await member.discord.roles.remove(rank.role);
                     await member.discord.roles.add(ranks[rank.rank].role);
                 }
             }
             else {
+                fieldValue += `${member.discord.toString()}  ${member.brawl.elo} ELO => ${member.brawl.elo + rank.defeat}\n`
                 member.brawl.elo += rank.defeat;
                 member.brawl.battles++;
                 member.brawl.defeats++;
@@ -55,19 +70,21 @@ export default class BattleResults {
             }
             await global.mongo.save('users', member.brawl);
         }
+        embed.addField("Изменение эло", "```" + fieldValue + "```")
         return {
             winner: winner,
-            members: members
+            members: members,
+            embed: embed
         }
     }
 
-    public static GetWinner (data: EndInteractionData, logs: Array<BattleConfig>, mode: number): 'team1' | 'team2' {
+    public static GetWinner (data: EndInteractionData, logs: Array<BattleConfig>, mode: number): GetWinnerResults {
         let victories = {
             team1: 0,
             team2: 0
         }
+        let team1: boolean;
         for(let log of logs) {
-            let team1: boolean;
             console.log(log.teams)
             ///console.log(data.team1[0])
             if(log.teams[0].find(p => p.tag === data.team1[0].brawl.brawlTag.replace(/O/g, "0"))) team1 = true;
@@ -94,6 +111,9 @@ export default class BattleResults {
             victories[winner]++;
         }
         if(victories.team1 < 2 && victories.team2 < 2) return null;
-        return victories.team1 > victories.team2 ? 'team1' : 'team2';
+        return {
+            winner: victories.team1 > victories.team2 ? 'team1' : 'team2',
+            team1: team1
+        };
     }
 }
