@@ -30,22 +30,22 @@ export default class BattleResults {
             console.log(gameLogs);
             let winner = this.GetWinner(data, gameLogs, mode);
             console.log(winner)
-            if(!winner && (i !== 2)) return null;
+            if(!winner?.winner && (i !== 2)) return null;
             victories[winner.winner]++;
             console.log(victories)
-            embed.addField(`Игра ${i}`, `Победитель: ${winner}\n` +
+            embed.addField(`Игра ${i}`, `Победитель: ${winner?.winner}\n` +
             `Победы: ${victories.team1} : ${victories.team2}\n` +
             `Команда1: ${winner.team1}`, true)
             mode++;
         }
         if(victories.team1 === victories.team2) return null;
-        let winner: 'team1' | 'team2' = victories.team1 > victories.team2 ? 'team1' : 'team2';
+        let gameWinner: 'team1' | 'team2' = victories.team1 > victories.team2 ? 'team1' : 'team2';
         let members: Array<GameMemberConfig & {eloChange: number}> = [];
         let fieldValue = '';
         for(let member of data.team1.concat(data.team2)) {
             let rank = ranks.find((r, i) => (member.brawl.elo >= r.elo) && (member.brawl.elo < ranks[i+1].elo));
             member.brawl = await global.mongo.findOne<User>('users', {id: member.discord.id});
-            if(data[winner].includes(member)) {
+            if(data[gameWinner].includes(member)) {
                 fieldValue += `${member.discord.toString()}  ${member.brawl.elo} ELO => ${member.brawl.elo + rank.victory}\n`
                 member.brawl.elo += rank.victory;
                 member.brawl.battles++;
@@ -72,7 +72,7 @@ export default class BattleResults {
         }
         embed.addField("Изменение эло", "```" + fieldValue + "```")
         return {
-            winner: winner,
+            winner: gameWinner,
             members: members,
             embed: embed
         }
@@ -105,7 +105,7 @@ export default class BattleResults {
                 if(!log.teams[1].find(m => m.tag === member.brawl.brawlTag.replace(/O/g, "0"))) valid = false;
                 console.log(`Includes: ${valid}`)
             })
-            console.log(valid)
+            console.log("Valid:", valid)
             if(!valid) return null;
             let winner = log.result === 'victory' ? 'team1' : 'team2';
             victories[winner]++;
