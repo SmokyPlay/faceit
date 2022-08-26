@@ -35,13 +35,13 @@ export default class PlayersInteraction extends AbstractInteraction implements I
             .addField("Команда 1",
                 this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
                     .join("\n"), true)
-            .addField("Команда 2" + "Счёт: 0",
+            .addField("Команда 2",
                 this.data.team2.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                    .join("\n") + "Счёт: 0", true)
+                    .join("\n"), true)
             .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
         this.allowedUsers = [nextSelecting.discord.id];
         if(this.data.members.length <= 1) {
-            this.data.team2.push(this.data.members[0])
+            this.data.team1.push(this.data.members[0])
             this.data.members = [];
             await interaction.editReply({components: []});
             this.reply.embed.fields = [];
@@ -50,10 +50,10 @@ export default class PlayersInteraction extends AbstractInteraction implements I
                 .setDescription(`Выберите режим, на котором хотите играть\nВыбирает: ${this.data.team1.find(m => m.captain).discord.toString()}`)
                 .addField("Команда 1",
                     this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                        .join("\n"), true)
+                        .join("\n") + "Счёт: 0", true)
                 .addField("Команда 2",
                     this.data.team2.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                        .join("\n"), true)
+                        .join("\n") + "Счёт: 0", true)
             let menu = new MessageSelectMenu()
                 .setCustomId(`${interaction.id}-mode`)
                 .setPlaceholder(`Выберите режим`)
