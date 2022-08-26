@@ -35,9 +35,9 @@ export default class PlayersInteraction extends AbstractInteraction implements I
             .addField("Команда 1",
                 this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
                     .join("\n"), true)
-            .addField("Команда 2",
+            .addField("Команда 2" + "Счёт: 0",
                 this.data.team2.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                    .join("\n"), true)
+                    .join("\n") + "Счёт: 0", true)
             .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
         this.allowedUsers = [nextSelecting.discord.id];
         if(this.data.members.length <= 1) {

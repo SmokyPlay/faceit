@@ -11,5 +11,6 @@ export default class ReadyEvent extends AbstractEvent implements EventConfig {
     await ClientLoader.slashCommands();
     await ClientLoader.engageJobs();
     await ClientLoader.loadPermanentInteractions();
+    //global.brawl.battleLog("#9Y9U8GJVQ").then(l => console.log(l.items[0].battle))
   }
 }

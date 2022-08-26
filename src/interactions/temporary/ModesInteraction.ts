@@ -43,7 +43,8 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                 .setThumbnail("https://media.discordapp.net/attachments/992896807199834153/992899959592595536/unknown.png")
                 .setDescription(`Игра создана!\n` +
                     this.data.selected
-                        .map((mode, i) => `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)]}` + '`').join("\n")
+                        .map((mode, i) =>
+                            `${i === 0 ? "**" : ""}Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)] + '`'}${i === 0 ? "**" : ""}`).join("\n")
                     + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
             let button = new MessageButton()
                 .setCustomId(`${interaction.id}-end`)
@@ -60,7 +61,8 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                     team2: this.data.team2,
                     lobby: this.data.lobby,
                     modes: this.data.selected,
-                    startedAt: interaction.createdAt
+                    startedAt: interaction.createdAt,
+                    count: {team1: 0, team2: 0, games: 0}
                 },
                 reply: this.reply
             })
