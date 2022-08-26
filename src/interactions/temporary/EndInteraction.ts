@@ -21,7 +21,7 @@ export default class EndInteraction extends AbstractInteraction implements Inter
         let member = interaction.member as GuildMember;
         let logs = await global.brawl.battleLog(this.data.team1.find(m => m.captain).brawl.brawlTag);
         let log = logs.items.filter(l => BattleTimeParser(l.battleTime) > this.data.startedAt).map(l => l.battle);
-        log = log.items.filter(l => l.mode === this.data.modes[this.data.count.games].value)
+        log = log.filter(l => l.mode === this.data.modes[this.data.count.games].value)
         console.log("Game ended, logs length:", log.length);
         let winner = await BattleResults.GetWinner(this.data, log);
         this.data.count[winner.winner]++;
