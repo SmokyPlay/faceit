@@ -44,7 +44,7 @@ export default class ModesInteraction extends AbstractInteraction implements Int
                 .setDescription(`Игра создана!\n` +
                     this.data.selected
                         .map((mode, i) =>
-                            `${i === 0 ? "**" : ""}Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)] + '`'}${i === 0 ? "**" : ""}`).join("\n")
+                            `Игра ${i+1}: ${'`' + mode.label + '`'}, карта: ${'`' + maps[mode.value][Math.floor(Math.random()*maps[mode.value].length)] + '`'}`).join("\n")
                     + `\nПо окончании игры нажмите ${'`' + "Закончить" + '`'}`)
             let button = new MessageButton()
                 .setCustomId(`${interaction.id}-end`)

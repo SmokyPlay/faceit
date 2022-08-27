@@ -40,10 +40,10 @@ export default class EndInteraction extends AbstractInteraction implements Inter
         this.reply.embed
             .addField("Команда 1",
                 this.data.team1.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                    .join("\n"), true)
-            .addField("Команда 2" + `Счёт: ${this.data.count.team1}`,
+                    .join("\n") + `\nСчёт: ${this.data.count.team1}`, true)
+            .addField("Команда 2",
                 this.data.team2.map(memb => memb.discord.toString() + (memb.captain ? '⭐' : ''))
-                    .join("\n") + `Счёт: ${this.data.count.team1}`, true)
+                    .join("\n") + `\nСчёт: ${this.data.count.team2}`, true)
         if(this.data.count.team1 === 2 || this.data.count.team2 === 2) {
             let winner: "team1" | "team2" = this.data.count.team1 === 2 ? "team1" : "team2"
             let results = await BattleResults.BattleResults(this.data, winner);
