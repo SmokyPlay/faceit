@@ -23,18 +23,19 @@ export default class EndInteraction extends AbstractInteraction implements Inter
         console.log("All logs", logs)
         let log = logs.items.filter(l => BattleTimeParser(l.battleTime) > this.data.startedAt).map(l => l.battle);
         console.log("Logs", log)
-        console.log("Modes", this.data.modes)
+        console.log(this.data.modes[this.data.count.games].value)
         log = log.filter(l => l.mode === this.data.modes[this.data.count.games].value)
         console.log("Game ended, logs length:", log.length);
         let winner = await BattleResults.GetWinner(this.data, log);
-        this.data.count[winner.winner]++;
-        this.data.count.games++;
+        console.log(winner)
         if(!winner) {
             await interaction.followUp({embeds: [
                 CommandError.other(member, "Бой еще не окончен, либо лобби было создано неправильно")]
             })
             return {ended: false}
         }
+        this.data.count[winner.winner]++;
+        this.data.count.games++;
         this.reply.embed.fields = []
         this.reply.embed
             .addField("Команда 1",
