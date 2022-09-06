@@ -33,6 +33,7 @@ export default class GiveMoneyCommand extends AbstractCommand implements ChatInp
         let member = interaction.options.getMember("участник") as GuildMember;
         let amount = interaction.options.getInteger("количество") as number;
         if(!member) return {reply: {content: "Участник не найден"}}
+        if(member.id === interaction.user.id) return {reply: {content: "Нельзя передавать деньги самому себе"}}
         let user2 = await global.mongo.findOne<User>('users', {id: member.id});
         if(!user2) return {reply: {content: "Участник не зарегистрирован в системе"}}
         if(user.balance < amount) return {reply: {content: "У вас недостаточно денег"}}
