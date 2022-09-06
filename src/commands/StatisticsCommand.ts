@@ -38,7 +38,7 @@ export default class StatisticsCommand extends AbstractCommand implements ChatIn
             .setDescription(`**ELO:** ${user.elo}/${ranks[rank.rank].elo}`)
             .addField("Боёв", user.battles.toString(), true)
             .addField("Побед", user.victories.toString(), true)
-            .addField("Поражений", user.defeats.toString(), true)
+            .addField("П/Б", user.battles ? (user.victories/user.battles).toFixed(2) : "0", true)
             .addField("Уровень", rank.rank.toString(), true)
             .addField("Роль", role.toString(), true)
         return {reply: {embeds: [embed]}}
