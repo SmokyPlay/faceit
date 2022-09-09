@@ -31,11 +31,13 @@ export default class StatisticsCommand extends AbstractCommand implements ChatIn
             return {reply: {embeds: [CommandError.other(member, "Участник не зарегистрирован в системе")]}}
         let rank = ranks.find((r, i) => (user.elo >= r.elo) && (user.elo < ranks[i+1].elo));
         let role = interaction.guild.roles.cache.get(rank.role);
+        let rep = user.rep ?? 0;
+        let emoji = rep >= 0 ? "<:like:1016778645248946346>" : "<:dislike:1016778721820151828>"
         let embed = new MessageEmbed()
             .setColor(role.hexColor === '#000000' ? '#007ef8' : role.hexColor)
             .setTitle(`Статистика ${member.displayName}`)
             .setThumbnail(member.displayAvatarURL({dynamic: true}))
-            .setDescription(`**ELO:** ${user.elo}/${ranks[rank.rank].elo}`)
+            .setDescription(`**ELO:** ${user.elo}/${ranks[rank.rank].elo}\n**Репутация:** ${rep} ${emoji}`)
             .addField("Боёв", user.battles.toString(), true)
             .addField("Побед", user.victories.toString(), true)
             .addField("П/Б", user.battles ? (user.victories/user.battles).toFixed(2) : "0", true)
