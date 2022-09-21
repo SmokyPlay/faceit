@@ -76,10 +76,10 @@ export default class ModesInteraction extends AbstractInteraction implements Int
     }
 
     private async SetVoiceChannels() {
-        for(let i = 0; i < 3; i++) {
+        for(let i = 0; i < (this.data.lobby.two ? 2 : 3); i++) {
             await this.data.team1[i].discord.voice.setChannel(this.data.lobby.team1);
         }
-        for(let i = 0; i < 3; i++) {
+        for(let i = 0; i < (this.data.lobby.two ? 2 : 3); i++) {
             await this.data.team2[i].discord.voice.setChannel(this.data.lobby.team2);
         }
     }
