@@ -43,7 +43,7 @@ export default class PlayersInteraction extends AbstractInteraction implements I
             .addField("Участники", this.data.members.map(memb => memb.discord.toString()).join("\n"))
         this.allowedUsers = [nextSelecting.discord.id];
         if(this.data.members.length <= 1) {
-            this.data.team1.push(this.data.members[0])
+            this.data[this.data.lobby.two ? "team2" : "team1"].push(this.data.members[0])
             this.data.members = [];
             await interaction.editReply({components: []});
             this.reply.embed.fields = [];
