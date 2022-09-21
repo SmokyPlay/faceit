@@ -31,9 +31,8 @@ export default class LeaderboardCommand extends AbstractCommand implements ChatI
             .setAuthor({name: "Лидеры сервера", iconURL: interaction.guild.iconURL({dynamic: true})})
             .setDescription("")
         let users = await global.mongo.find<User>('users');
-        console.log(sort)
-        sort === "positive" ? users.sort((a, b) => b.rep ?? 0 - a.rep ?? 0) :
-            users.sort((a, b) => a.rep ?? 0 - b.rep ?? 0);
+        sort === "positive" ? users.sort((a, b) => (b.rep ?? 0) - (a.rep ?? 0)) :
+            users.sort((a, b) => (a.rep ?? 0) - (b.rep ?? 0));
         users = users.slice(0, 10);
         users.forEach((user, i) => {
             let rep = user.rep ?? 0;

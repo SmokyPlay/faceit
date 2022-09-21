@@ -36,7 +36,7 @@ export default class StartInteraction extends AbstractInteraction implements Int
             return {ended: false}
         }
         this.data.members.push({discord: member, brawl: user, captain: false});
-        if(this.data.members.length === 6) {
+        if(this.data.members.length === (this.data.lobby.two ? 4 : 6)) {
             await interaction.editReply({components: []});
             await this.CreateCaptains();
             this.reply.embed.fields = [];

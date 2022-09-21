@@ -5,4 +5,5 @@ export default interface LobbyConfig {
     voice: string
     team1: string
     team2: string
+    two?: boolean
 }

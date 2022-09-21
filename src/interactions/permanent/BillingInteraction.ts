@@ -62,11 +62,13 @@ export default class BillingInteraction extends AbstractPermanentInteraction imp
         if(isNaN(amount) || amount % 1 || amount < 1 || amount > 10000)
             return interaction.reply({content: "Неверно указано количество денег", ephemeral: true});
         let billId = global.qiwi.generateId();
+        let ends = new Date(Date.now() + 2592000000)
         let fields = {
             amount: amount,
             currency: "RUB",
             comment: "Пополнение счета на CIS Faceit",
-            account: interaction.user.id
+            account: interaction.user.id,
+            expirationDateTime: ends
         }
         let response = await global.qiwi.createBill(billId, fields);
         let embed = new MessageEmbed()

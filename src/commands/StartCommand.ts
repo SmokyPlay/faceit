@@ -23,9 +23,10 @@ export default class StartCommand extends AbstractCommand implements ChatInputAp
             return {reply: {embeds:
                         [CommandError.other(member, "Эту команду можно использовать только находясь в лобби")]}}
         }
-        if(member.voice.channel.members.size < 6) {
+        let playersCount = lobby.two ? 4 : 6;
+        if(member.voice.channel.members.size < playersCount) {
             return {reply: {embeds: [
-                CommandError.other(member, "Для начала игры в лобби должно быть 6 игроков",
+                CommandError.other(member, `Для начала игры в лобби должно быть ${playersCount} игроков`,
                     "Недостаточно игроков")], ephemeral: true}}
         }
         let user = await global.mongo.findOne<User>('users', {id: member.id});

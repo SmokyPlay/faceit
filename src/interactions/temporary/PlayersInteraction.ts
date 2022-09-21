@@ -22,7 +22,7 @@ export default class PlayersInteraction extends AbstractInteraction implements I
     private async player(interaction: SelectMenuInteraction): Promise<InteractionExecutionResultConfig> {
         let value = interaction.values[0];
         let player = this.data.members.find(m => m.discord.id === value);
-        let team: 'team1' | 'team2' = this.data.members.length === 4 ? 'team1' : 'team2';
+        let team: 'team1' | 'team2' = this.data.members.length === (this.data.lobby.two ? 4 : 6) ? 'team1' : 'team2';
         this.data[team].push(player);
         this.data.members.splice(this.data.members.indexOf(player), 1);
         let menu = this.reply.row.components[0] as MessageSelectMenu;
